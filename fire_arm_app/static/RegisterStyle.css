@@ -1,0 +1,22 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+    .container{
+    background-color: rgb(3, 83, 148);
+    align-items: center;  
+    border: 3px black solid; 
+    border-radius: 50px;
+    padding: 50px;
+    }
+
+    .RegisterTitle{
+        font-family: 'Modak', cursive;
+        text-align: center;
+        color:bisque;
+        font-size: 50px;
+        padding-bottom: 10px;
+        -webkit-text-stroke: 3px black;
+        text-shadow: 4px 4px black;
+    }
