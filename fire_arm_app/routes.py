@@ -58,14 +58,15 @@ def show_shooters():
         shooters = Shooter.query.all()
         return render_template("Shooters.html", shooters=shooters)
 
-# @app.route('/shooter_profile', methods=['POST', 'GET'])
-# def shooter_profile():
-#     if request.method == 'POST':
-#         shooter = Shooter(First_Name=request.form['Fname'],
-#                                 Last_Name=request.form['Lname'],
-#                                 FireArm_Preference=request.form['Gpreference'],
-#                                 Description=request.form['Desc']
-#                                 )
+@app.route('/shooter_profile')
+def shooter_profile():
+    # if request.method == 'POST':
+        # shooter = Shooter(First_Name=request.form['Fname'],
+        #                         Last_Name=request.form['Lname'],
+        #                         FireArm_Preference=request.form['Gpreference'],
+        #                         Description=request.form['Desc']
+        #                         )
+        return render_template('Shooter_Profile.html')
 
 # DELETE SHOOTER
 @app.route('/delete/<int:id>', methods=['GET','POST'])

@@ -1,0 +1,54 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+    #container{
+    background-color: rgb(3, 83, 148);
+    align-items: center;  
+    border: 3px black solid; 
+    border-radius: 50px;
+    padding: 50px;
+}
+
+#ShooterProfileTitle{
+    font-family: 'Modak', cursive;
+    text-align: center;
+    color:bisque;
+    font-size: 50px;
+    padding-bottom: 10px;
+    -webkit-text-stroke: 3px black;
+    text-shadow: 4px 4px black;
+}
+
+.top-wrapper{
+        border: red dotted 2px;
+        display: flex;
+        justify-content: center;
+    }
+
+        .top-wrapper img {
+            margin: 0px 100px;
+        }
+
+.mid-wrapper{
+    border: red dotted 2px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px
+}
+    .mid-wrapper img {
+        width: 40%;
+        margin: 0px 100px;
+
+    }
+.bot-wrapper{
+    border: red dotted 2px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px
+}
+    .bot-wrapper img {
+        width: 25%;
+        margin: 0px 100px;
+    }

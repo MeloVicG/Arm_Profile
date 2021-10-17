@@ -14,20 +14,20 @@
             <h1 id='ShootersTitle'>Shooters Table</h1>    
             <thead>
                 <tr class="table-secondary">
-                    <th scope="col">First Name</th>
+                    <th>First Name</th>
                     <th>Last Name</th>
                     <th>FireArm Preference</th>
                     <th>Description</th>
                     <th>Action</th>
                 </tr>
                 <form action="/logout">
-                    <button>Logout</button>
+                    <button class='logoutButton'>Logout</button>
                 </form>
             </thead>
             <tbody>
                 {% for shooter in shooters %}
                 <tr>
-                    <td>{{ shooter.First_Name }}</td>
+                    <td><a href="/profile">{{ shooter.First_Name }}</a></td>
                     <td>{{ shooter.Last_Name }}</td>
                     <td>{{ shooter.FireArm_Preference }}</td>
                     <td>{{ shooter.Description }}</td>
