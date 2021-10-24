@@ -44,10 +44,10 @@ def show_shooters():
     print("*******we are in the show_user_profile page**********")
     if request.method == 'POST':
         shooter = Shooter(First_Name=request.form['Fname'],
-                                Last_Name=request.form['Lname'],
-                                FireArm_Preference=request.form['Gpreference'],
-                                Description=request.form['Desc']
-                                )
+                          Last_Name=request.form['Lname'],
+                          FireArm_Preference=request.form['Gpreference'],
+                          Description=request.form['Desc']
+                          )
         shooters = Shooter.query.all()
         # pushing to db
         db.session.add(shooter)
@@ -58,15 +58,17 @@ def show_shooters():
         shooters = Shooter.query.all()
         return render_template("Shooters.html", shooters=shooters)
 
-@app.route('/shooter_profile')
-def shooter_profile():
-    # if request.method == 'POST':
-        # shooter = Shooter(First_Name=request.form['Fname'],
-        #                         Last_Name=request.form['Lname'],
-        #                         FireArm_Preference=request.form['Gpreference'],
-        #                         Description=request.form['Desc']
-        #                         )
-        return render_template('Shooter_Profile.html')
+#----------------------------------------------------------------------------------------
+
+# SELECTED SHOOTER PROFILE
+@app.route('/shooter_profile/<int:id>')
+def shooter_profile(id):
+    selected_shooter = Shooter.query.get(id)
+    print("==============================", selected_shooter)
+    return render_template('Shooter_Profile.html', selected_shooter=selected_shooter)
+
+
+#----------------------------------------------------------------------------------------
 
 # DELETE SHOOTER
 @app.route('/delete/<int:id>', methods=['GET','POST'])

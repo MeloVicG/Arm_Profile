@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/ShootersStyle.css">
+    <link rel="stylesheet" href="../static/ShootersStyle.css">
 </head>
 <body>
     <div class='container'>
@@ -21,17 +21,20 @@
                     <th>Action</th>
                 </tr>
                 <form action="/logout">
-                    <button class='logoutButton'>Logout</button>
+                    <button class='logoutButton'>Register A Shooter</button>
                 </form>
             </thead>
             <tbody>
                 {% for shooter in shooters %}
                 <tr>
-                    <td><a href="/profile">{{ shooter.First_Name }}</a></td>
+                    <td><a href="{{  url_for('shooter_profile', 
+                                              id=shooter._id, 
+                                              )  }}">{{ shooter.First_Name }}</a></td>
                     <td>{{ shooter.Last_Name }}</td>
                     <td>{{ shooter.FireArm_Preference }}</td>
                     <td>{{ shooter.Description }}</td>
                     <!-- <form action="/delete/<int:id>"></form> -->
+    <!-- delete button -->
                     <form action="{{  url_for('delete_shooter', id=shooter._id)  }}" method='POST'>
                         <td><button>Delete</button></td>
                     </form>

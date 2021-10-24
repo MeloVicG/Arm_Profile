@@ -1,12 +1,15 @@
 body {
     margin: 0px;
     padding: 0px;
+    background: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/firearm-blueprints-denny-h.jpg");
+    background-repeat: none;
+    background-size: 100%;
 }
 
-    .container{
-    background-color: rgb(3, 83, 148);
+.container{
     align-items: center;  
-    border: 3px black solid; 
+    padding: 50px;
+    align-items: center;  
     border-radius: 50px;
     padding: 50px;
     }
@@ -19,4 +22,5 @@ body {
         padding-bottom: 10px;
         -webkit-text-stroke: 3px black;
         text-shadow: 4px 4px black;
+        background:rgb(37,38,43, 0.8);
     }

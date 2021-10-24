@@ -3,11 +3,12 @@ body {
     padding: 0px;
 }
 
-    #container{
-    background-color: rgb(3, 83, 148);
+#container{
+    background: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/firearm-blueprints-denny-h.jpg");
+    background-repeat: none;
+    background-size: 100%;
     align-items: center;  
     border: 3px black solid; 
-    border-radius: 50px;
     padding: 50px;
 }
 
@@ -19,35 +20,44 @@ body {
     padding-bottom: 10px;
     -webkit-text-stroke: 3px black;
     text-shadow: 4px 4px black;
+    background:rgb(37,38,43, 0.8)
+}
+
+h2{
+    color: white;
 }
 
 .top-wrapper{
         border: red dotted 2px;
         display: flex;
         justify-content: center;
+        background:rgb(37,38,43, 0.8);
     }
-
-        .top-wrapper img {
-            margin: 0px 100px;
-        }
-
-.mid-wrapper{
-    border: red dotted 2px;
-    display: flex;
-    justify-content: center;
-    margin: 20px 0px
-}
+    
+    .top-wrapper img {
+        margin: 0px 100px;
+        width: 30%;
+    }
+    
+    .mid-wrapper{
+        border: red dotted 2px;
+        display: flex;
+        justify-content: center;
+        margin: 20px 0px;
+        background:rgb(37,38,43, 0.8);;
+    }
     .mid-wrapper img {
         width: 40%;
         margin: 0px 100px;
-
+        
     }
-.bot-wrapper{
-    border: red dotted 2px;
-    display: flex;
-    justify-content: center;
-    margin: 20px 0px
-}
+    .bot-wrapper{
+        border: red dotted 2px;
+        display: flex;
+        justify-content: center;
+        margin: 20px 0px;
+        background:rgb(37,38,43, 0.8);;
+    }
     .bot-wrapper img {
         width: 25%;
         margin: 0px 100px;
