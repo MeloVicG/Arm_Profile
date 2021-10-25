@@ -29,9 +29,13 @@
                 <tr>
                     <td><a href="{{  url_for('shooter_profile', 
                                               id=shooter._id, 
-                                              )  }}">{{ shooter.First_Name }}</a></td>
+                                              )  }}">{{ shooter.First_Name }}</a>
+                                                    </td>
                     <td>{{ shooter.Last_Name }}</td>
-                    <td>{{ shooter.FireArm_Preference }}</td>
+                    <td><a href="{{  url_for('gun_profile', 
+                                              id=shooter._id, 
+                                              )  }}">{{ shooter.FireArm_Preference }}</a>
+                                                    </td>
                     <td>{{ shooter.Description }}</td>
                     <!-- <form action="/delete/<int:id>"></form> -->
     <!-- delete button -->

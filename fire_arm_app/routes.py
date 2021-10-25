@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 # from models import Shooter
 # from models.Shooter import Shooter, app
 
@@ -19,6 +20,7 @@ class Shooter(db.Model):
     Last_Name = db.Column(db.Integer(),nullable=False)
     FireArm_Preference = db.Column(db.String(length=50), nullable=True)
     Description = db.Column(db.String(length=200), nullable=True)
+    # FireArms = relationship("FireArm", backref="shooters")
 
     def __init__(self, First_Name, Last_Name, FireArm_Preference, Description):
         self.First_Name = First_Name
@@ -26,6 +28,26 @@ class Shooter(db.Model):
         self.FireArm_Preference = FireArm_Preference
         self.Description = Description
 
+
+class FireArm(db.Model):
+    _id = db.Column("id", db.Integer(),primary_key=True)
+    Gun_Type = db.Column(db.String(length=50), nullable=False)
+    Gun_Name = db.Column(db.String(length=50), nullable=False)
+    Gun_Parts = db.Column(db.String(length=50), nullable=True)
+    Gun_Bullet_Type = db.Column(db.String(length=100), nullable=True)
+    Gun_Description = db.Column(db.String(length=100), nullable=True)
+    # Shooters = relationship("Shooters", backref='fiream_preference')
+    
+    def __init__(self, Gun_Type, Gun_Name, Gun_Parts, Gun_Bullet_Type, Gun_Description):
+        self.Gun_Type = Gun_Type
+        self.Gun_Name = Gun_Name
+        self.Gun_Parts = Gun_Parts
+        self.Gun_Bullet_Type = Gun_Bullet_Type
+        self.Gun_Description = Gun_Description
+
+    # def pistol():
+
+    
 @app.route('/')
 def index():
     return '<h1>this is index page! go to /register</h1>'
@@ -64,8 +86,22 @@ def show_shooters():
 @app.route('/shooter_profile/<int:id>')
 def shooter_profile(id):
     selected_shooter = Shooter.query.get(id)
-    print("==============================", selected_shooter)
     return render_template('Shooter_Profile.html', selected_shooter=selected_shooter)
+
+#----------------------------------------------------------------------------------------
+
+# SELECTED FIREARM PROFILE
+@app.route('/Fire-Arm_profile/<int:id>')
+def gun_profile(id):
+    pistol = FireArm(
+        Gun_Type = "Pistol", 
+        Gun_Name = "Ebony & Ivory", 
+        Gun_Parts = "gun parts here", 
+        Gun_Bullet_Type = "Bullet types here", 
+        Gun_Description = "Dantes Favorite Guns"
+    )
+    selected_firearm = FireArm.query.get(id)
+    return render_template('Gun_Profile.html', selected_firearm=selected_firearm, pistol=pistol)
 
 
 #----------------------------------------------------------------------------------------
@@ -88,7 +124,9 @@ def delete_shooter(id):
         return redirect(url_for('show_shooters'))
 
 
-# LOGOUT USER
+#----------------------------------------------------------------------------------------
+
+# LOGOUT USER *same as register shooter
 @app.route('/logout')
 def logout():
     print("**************users have been deleted*****************")

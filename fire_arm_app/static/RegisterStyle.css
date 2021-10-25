@@ -2,8 +2,14 @@ body {
     margin: 0px;
     padding: 0px;
     background: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/firearm-blueprints-denny-h.jpg");
-    background-repeat: none;
-    background-size: 100%;
+    /* background-repeat: none; */
+    /* background-size: 100%; */
+
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
     .container{
@@ -12,17 +18,17 @@ body {
     width: 50%;
     }
 
-    .RegisterForm{
-        background:rgb(37,38,43, 0.8);
-        padding: 50px;
-    }
-    .RegisterTitle{
-        font-family: 'Modak', cursive;
-        text-align: center;
-        color:bisque;
-        font-size: 50px;
-        padding: 0px 20px;
-        -webkit-text-stroke: 3px black;
-        text-shadow: 4px 4px black;
-        background:rgb(37,38,43, 0.8);
-    }
+        .RegisterForm{
+            background:rgb(37,38,43, 0.9);
+            padding: 50px;
+        }
+        .RegisterTitle{
+            font-family: 'Modak', cursive;
+            text-align: center;
+            color:bisque;
+            font-size: 50px;
+            padding: 0px 20px;
+            -webkit-text-stroke: 3px black;
+            text-shadow: 4px 4px black;
+            background:rgb(37,38,43, 0.9);
+        }
