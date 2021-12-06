@@ -1,29 +1,46 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext import declarative
+from sqlalchemy.ext.declarative import declarative_base
+
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy import create_engine
 
-app = Flask(__name__)
-app.secret_key = 'hello'
+# from routes import db, app
 
-engine = create_engine("sqlite:///gun_profile.db",
-                            encoding='latin1', echo=True)
+# binds instance to flask app 
+app = Flask(__name__) # app here goes with model - no longer needed in app
+# app.secret_key = 'hello'
+app.config['SECRET_KEY'] = 'hello'
+
+# engine = create_engine("postgresql://vic:gar@localhost.com/")
+# engine = create_engine("sqlite:///gun_profile.db",)
+
 # engine = create_engine("postgresql://vic:gar@localhost/gun_profile")
-connection = engine.connect()
+# connection = engine.connect()
+# with Session() as session:
+#     session.add(Shooter)
 
 # checks the engine
 # from pdb import set_trace; set_trace()
 # print(engine.table_names())
 
 # # dictionary that accept new key values from me   --name of table--.db??
-# app.config['SQLALCHEMy_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
 # app.config['SQLALCHEMy_DATABASE_UexRI'] = 'sqlite:///gun_profile.db'
+app.config['SQLALCHEMY_ECHO'] = True
 
 # make it so were not tracking modifications to the db
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# this is also takes care of our declaritive base and session -Megan Amendola (youtube)
+db = SQLAlchemy(app) 
+
+
 
 class Shooter(db.Model):
+    # __table__ = "user" # we dont have to do this is flask sqlalchemy
+
     _id = db.Column("id", db.Integer(),primary_key=True)
     First_Name = db.Column(db.String(length=30), nullable=False)
     Last_Name = db.Column(db.Integer(),nullable=False)

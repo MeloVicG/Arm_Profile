@@ -1,58 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.engine import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-# from models import Shooter
-# from models.Shooter_Models import Shooter, FireArm, Parts
-from models import Shooter_Models
+from sqlalchemy.orm.scoping import scoped_session
+from sqlalchemy.orm.session import sessionmaker
 
-app = Flask(__name__)
-app.secret_key = 'hello'
-# engine = create_engine("mysql://scott:tiger@hostname/dbname",
-                            # encoding='latin1', echo=True)
-# # dictionary that accept new key values from me   --name of table--.db??
-# app.config['SQLALCHEMy_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
-# app.config['SQLALCHEMy_DATABASE_URI'] = 'sqlite:///gun_profile.db'
-# app.config['SQLALCHEMY_ECHO'] = True
+from models.Shooter_Models import app, db, Shooter, FireArm, Parts
 
+# Base = declarative_base() # TODO what does this do?? -binds to a model
 
-# make it so were not tracking modifications to the db
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# engine = create_engine("postgresql://vic:gar@localhost/gun_profile")
+# connection = engine.connect()
 
-# class Shooter(db.Model):
-#     _id = db.Column("id", db.Integer(),primary_key=True)
-#     First_Name = db.Column(db.String(length=30), nullable=False)
-#     Last_Name = db.Column(db.Integer(),nullable=False)
-#     FireArm_Preference = db.Column(db.String(length=50), nullable=True)
-#     Description = db.Column(db.String(length=200), nullable=True)
-#     # FireArms = relationship("FireArm", backref="shooters")
-
-#     def __init__(self, First_Name, Last_Name, FireArm_Preference, Description):
-#         self.First_Name = First_Name
-#         self.Last_Name = Last_Name
-#         self.FireArm_Preference = FireArm_Preference
-#         self.Description = Description
-
-
-# class FireArm(db.Model):
-#     _id = db.Column("id", db.Integer(),primary_key=True)
-#     Gun_Type = db.Column(db.String(length=50), nullable=False)
-#     Gun_Name = db.Column(db.String(length=50), nullable=False)
-#     Gun_Parts = db.Column(db.String(length=50), nullable=True)
-#     Gun_Bullet_Type = db.Column(db.String(length=100), nullable=True)
-#     Gun_Description = db.Column(db.String(length=100), nullable=True)
-#     # Shooters = relationship("Shooters", backref='fiream_preference')
-    
-#     def __init__(self, Gun_Type, Gun_Name, Gun_Parts, Gun_Bullet_Type, Gun_Description):
-#         self.Gun_Type = Gun_Type
-#         self.Gun_Name = Gun_Name
-#         self.Gun_Parts = Gun_Parts
-#         self.Gun_Bullet_Type = Gun_Bullet_Type
-#         self.Gun_Description = Gun_Description
-
-    # def pistol():
-
-    
+#-----------------------------------------------------------------------------------------------    
+#-----------------------------------------------------------------------------------------------    
 @app.route('/')
 def index():
     return '<h1>this is index page! go to /register</h1>'
@@ -60,9 +22,6 @@ def index():
 @app.route('/register')
 def register():
     print("*******we are in the register page**********")
-    # if 'users' in session:
-    #     print("===we have users in session===")
-    #     return redirect(url_for('show_shooters'))
     return render_template("Register.html")
 
 
@@ -70,19 +29,18 @@ def register():
 def show_shooters():
     print("*******we are in the show all shooters page**********")
     if request.method == 'POST':
-        shooter = Shooter_Models.Shooter(First_Name=request.form['Fname'],
-                                        Last_Name=request.form['Lname'],
-                                        FireArm_Preference=request.form['Gpreference'],
-                                        Description=request.form['Desc']
-                                        )
-        print("THIS IS WHERE I AM", shooter.First_Name)
-        shooters = Shooter_Models.Shooter.query.all()
-        print("THIS IS WHERE I AM 2")
+        # adding from form into db
+        shooter = Shooter(First_Name=request.form['Fname'],
+                        Last_Name=request.form['Lname'],
+                        FireArm_Preference=request.form['Gpreference'],
+                        Description=request.form['Desc']
+                        )
+        shooters = Shooter.query.all()
         db.session.add(shooter)
         db.session.commit()
         return render_template("Shooters.html", shooters=shooters)
     else:
-        shooters = Shooter_Models.Shooter.query.all()
+        shooters = Shooter.query.all()
         return render_template("Shooters.html", shooters=shooters)
 
 #----------------------------------------------------------------------------------------
@@ -90,7 +48,7 @@ def show_shooters():
 # SELECTED SHOOTER PROFILE
 @app.route('/shooter_profile/<int:id>')
 def shooter_profile(id):
-    selected_shooter = Shooter_Models.Shooter.query.get(id)
+    selected_shooter = Shooter.query.get(id)
     return render_template('Shooter_Profile.html', selected_shooter=selected_shooter)
 
 #----------------------------------------------------------------------------------------
@@ -98,14 +56,14 @@ def shooter_profile(id):
 # SELECTED FIREARM PROFILE
 @app.route('/Fire-Arm_profile/<int:id>')
 def gun_profile(id):
-    pistol = Shooter_Models.FireArm(
-        Gun_Type = "Pistol", 
-        Gun_Name = "Ebony & Ivory", 
-        Gun_Parts = "gun parts here", 
-        Gun_Bullet_Type = "Bullet types here", 
-        Gun_Description = "Dantes Favorite Guns"
-    )
-    selected_firearm = Shooter_Models.FireArm.query.get(id)
+    pistol = FireArm(
+                                    Gun_Type = "Pistol", 
+                                    Gun_Name = "Ebony & Ivory", 
+                                    Gun_Parts = "gun parts here", 
+                                    Gun_Bullet_Type = "Bullet types here", 
+                                    Gun_Description = "Dantes Favorite Guns"
+                                    )
+    selected_firearm = FireArm.query.get(id)
     return render_template('Gun_Profile.html', selected_firearm=selected_firearm, pistol=pistol)
 
 
@@ -116,7 +74,7 @@ def gun_profile(id):
 def delete_shooter(id):
     print("==========Deleting Shooter===========")
     if request.method == 'POST':
-        shooter_to_delete = Shooter_Models.Shooter.query.get_or_404(id)
+        shooter_to_delete = Shooter.query.get_or_404(id)
         try:
             db.session.delete(shooter_to_delete)
             db.session.commit()
@@ -145,6 +103,6 @@ def logout():
 
 
 if __name__== "__main__":
-    #creates the db if itdoes not exist
+    #creates the db if it does not exist
     db.create_all()
     app.run(debug = True)
