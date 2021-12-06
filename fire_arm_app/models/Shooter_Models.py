@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 # binds instance to flask app 
 app = Flask(__name__) # app here goes with model - no longer needed in app
 # app.secret_key = 'hello'
-# app.config['SECRET_KEY'] = 'hello'
+# app.config['SECRET_KEY'] = SECRET_KEY
 
 # engine = create_engine("postgresql://vic:gar@localhost.com/")
 # engine = create_engine("sqlite:///gun_profile.db",)
