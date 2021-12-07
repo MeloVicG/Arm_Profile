@@ -30,10 +30,10 @@ def show_shooters():
     print("*******we are in the show all shooters page**********")
     if request.method == 'POST':
         # adding from form into db
-        shooter = Shooter(First_Name=request.form['Fname'],
-                        Last_Name=request.form['Lname'],
-                        FireArm_Preference=request.form['Gpreference'],
-                        Description=request.form['Desc']
+        shooter = Shooter(first_name=request.form['Fname'],
+                        last_name=request.form['Lname'],
+                        firearm_preference=request.form['Gpreference'],
+                        description=request.form['Desc']
                         )
         shooters = Shooter.query.all()
         db.session.add(shooter)
@@ -57,11 +57,11 @@ def shooter_profile(id):
 @app.route('/Fire-Arm_profile/<int:id>')
 def gun_profile(id):
     pistol = FireArm(
-                                    Gun_Type = "Pistol", 
-                                    Gun_Name = "Ebony & Ivory", 
-                                    Gun_Parts = "gun parts here", 
-                                    Gun_Bullet_Type = "Bullet types here", 
-                                    Gun_Description = "Dantes Favorite Guns"
+                                    gun_type = "Pistol", 
+                                    gun_name = "Ebony & Ivory", 
+                                    gun_parts = "gun parts here", 
+                                    gun_bullet_type = "Bullet types here", 
+                                    gun_description = "Dantes Favorite Guns"
                                     )
     selected_firearm = FireArm.query.get(id)
     return render_template('Gun_Profile.html', selected_firearm=selected_firearm, pistol=pistol)
