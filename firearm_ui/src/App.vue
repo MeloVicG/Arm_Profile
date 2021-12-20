@@ -1,19 +1,10 @@
-<template lang="pug">
-div
-  Register(msg="Welcome to Your Vue.js App")
-
+<template>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/guns_list">List of Guns</router-link>
+  </div>
+  <router-view/>
 </template>
-
-<script>
-import Register from './components/Register.vue'
-
-export default {
-  name: 'App',
-  components: {
-    Register
-  }
-}
-</script>
 
 <style>
 #app {
@@ -22,6 +13,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: white;
+}
+
+#nav a.router-link-exact-active {
+  color: yellow;
 }
 </style>

@@ -12,6 +12,9 @@
       input(placeholder="Description" name="Desc" class="form-control" type="text")
     div  
       input(type="submit")
+    div
+      | have to use wsgi to connect backend and frontend
+    
 </template>
 
 
