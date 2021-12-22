@@ -10,15 +10,15 @@ body
                     th FireArm Preference
                     th Description
                     th Action
-                form.action("/logout")
+                form.action("logout")
                     button.logoutButton Register A Shooter
                     
             tbody
                 | {% for shooter in shooters %}
                 tr
-                    td.a( href=url_for('shooter_profile', id=shooter._id,) ) {{ shooter.first_name }}
+                    //- td.a( href=url_for('shooter_profile', id=shooter._id,) ) {{ shooter.first_name }}
                     td {{ shooter.last_name }}
-                    td.a( href=url_for('gun_profile', id=shooter._id, ) ) {{ shooter.firearm_preference }}
+                    //- td.a( href=url_for('gun_profile', id=shooter._id, ) ) {{ shooter.firearm_preference }}
                     td {{ shooter.description }}
                     //- <!-- <form action="/delete/<int:id>"></form> -->
                         <!-- delete button -->
@@ -26,3 +26,11 @@ body
                     //-     td.button Delete
                 //- {% endfor %}
 </template>
+
+<script>
+
+export default {
+    name: 'Shooters',
+}
+
+</script>

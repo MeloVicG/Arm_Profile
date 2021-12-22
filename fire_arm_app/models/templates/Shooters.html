@@ -28,15 +28,15 @@
                 {% for shooter in shooters %}
                 <tr>
                     <td><a href="{{  url_for('shooter_profile', 
-                                              id=shooter._id, 
-                                              )  }}">{{ shooter.First_Name }}</a>
-                                                    </td>
-                    <td>{{ shooter.Last_Name }}</td>
+                                                id=shooter._id, 
+                                                )  }}">{{ shooter.first_name }}</a>
+                                                        </td>
+                    <td>{{ shooter.last_name }}</td>
                     <td><a href="{{  url_for('gun_profile', 
-                                              id=shooter._id, 
-                                              )  }}">{{ shooter.FireArm_Preference }}</a>
-                                                    </td>
-                    <td>{{ shooter.Description }}</td>
+                                                id=shooter._id, 
+                                                )  }}">{{ shooter.firearm_preference }}</a>
+                                                        </td>
+                    <td>{{ shooter.description }}</td>
                     <!-- <form action="/delete/<int:id>"></form> -->
     <!-- delete button -->
                     <form action="{{  url_for('delete_shooter', id=shooter._id)  }}" method='POST'>

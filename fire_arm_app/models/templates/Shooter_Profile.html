@@ -10,18 +10,18 @@
 </head>
 <body>
     <div id='container'>
-        <h1 id='ShooterProfileTitle'>Hello Shooter {{selected_shooter.First_Name}} {{selected_shooter.Last_Name}}</h1>
-        <form action="/shooters"><button>Return</button></form>
+        <h1 id='ShooterProfileTitle'>Hello Shooter {{selected_shooter.first_name}} {{selected_shooter.last_name}}</h1>
+        <form action="/shooters"><button>DashBoard</button></form>
         <div class='top-wrapper'>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6ygxqVtrly1VlqB7mCiDuWky9eSpJLru3nQ&usqp=CAU" alt="sexy shooter girl">
-            <h2>{{selected_shooter.First_Name}} </h2>
+            <h2>{{selected_shooter.first_name}} </h2>
         </div>
         <div class='mid-wrapper'>
             <img src="https://www.mcmillanfirearms.com/images/MCMILLAN%20PHOTOS/RIFLE%20PHOTOS/TAC-50C.JPG" alt="mcmillan tac-50C">
-            <h2>{{selected_shooter.FireArm_Preference}} </h2>
+            <h2>{{selected_shooter.firearm_preference}} </h2>
         </div>
         <div class='bot-wrapper'>
-            <h2>{{selected_shooter.Description}} </h2>
+            <h2>{{selected_shooter.description}} </h2>
         </div>
     </div>
 </body>

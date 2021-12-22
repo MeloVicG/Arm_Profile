@@ -1,10 +1,15 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/guns_list">List of Guns</router-link>
+    <router-link to="/register">Home</router-link> |
+    <router-link to="/guns_list">List of Guns</router-link> |
+    <router-link to="/shooters">Shooters</router-link>
   </div>
   <router-view/>
 </template>
+
+
+
+
 
 <style>
 #app {
@@ -17,6 +22,9 @@
 
 #nav {
   padding: 30px;
+  margin: 5% 30%;
+  background: black;
+  opacity: 90%;
 }
 
 #nav a {

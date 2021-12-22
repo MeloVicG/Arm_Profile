@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Guns_List from '../views/Guns_List.vue'
-import Gun_Profile from '../components/Gun_Profile'
-import Shooters from '../components/Shooters'
+import GunsList from '../views/GunsList'
+import GunProfile from '@/components/GunProfile'
+import Shooters from '@/components/Shooters'
+import Register from '@/components/Register'
 
 const routes = [
   {
@@ -11,9 +12,14 @@ const routes = [
     component: Home
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '/guns_list',
-    name: 'Guns_List',
-    component: Guns_List
+    name: 'GunsList',
+    component: GunsList
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -23,11 +29,11 @@ const routes = [
   },
   {
     path: '/gun_profile',
-    name: 'Gun_Profile',
-    component: Gun_Profile
+    name: 'GunProfile',
+    component: GunProfile
   },
   {
-    path: '/Shooters',
+    path: '/shooters',
     name: 'Shooters',
     component: Shooters
   },
