@@ -1,40 +1,47 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.engine import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy.orm.session import sessionmaker
+from traceback import print_tb
+from flask import Flask, \
+                Blueprint, \
+                render_template, \
+                request, \
+                redirect, url_for, session
 
-from models.Shooter_Models import app, db, Shooter, FireArm, Parts
+from models.Shooter_Models import Shooter, FireArm, Parts
+from api import db
+
 
 # Base = declarative_base() # TODO what does this do?? -binds to a model
 
 # engine = create_engine("postgresql://vic:gar@localhost/gun_profile")
 # connection = engine.connect()
+# app = Flask(__name__) # app here goes with model - no longer needed in app
+# CORS(create_app)
+# db = SQLAlchemy(app) 
+
+v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix="/KumaArms")
 
 #-----------------------------------------------------------------------------------------------    
 #-----------------------------------------------------------------------------------------------    
-@app.route('/')
+
+# @app.route('/')
+@v1_firearm_profile_bp.route('/')
 def index():
     return '<h1>this is index page! go to /register</h1>'
 
-@app.route('/register')
+@v1_firearm_profile_bp.route('/register')
 def register():
     print("*******we are in the register page**********")
     return render_template("Register.html")
 
 
-@app.route('/shooters', methods=['POST', 'GET'])
+@v1_firearm_profile_bp.route('/shooters', methods=['POST', 'GET'])
 def show_shooters():
     print("*******we are in the show all shooters page**********")
     if request.method == 'POST':
-        # adding from form into db
         shooter = Shooter(first_name=request.form['Fname'],
-                        last_name=request.form['Lname'],
-                        firearm_preference=request.form['Gpreference'],
-                        description=request.form['Desc']
-                        )
+                          last_name=request.form['Lname'],
+                          firearm_preference=request.form['Gpreference'],
+                          description=request.form['Desc']
+                          )
         shooters = Shooter.query.all()
         db.session.add(shooter)
         db.session.commit()
@@ -46,7 +53,7 @@ def show_shooters():
 #----------------------------------------------------------------------------------------
 
 # SELECTED SHOOTER PROFILE
-@app.route('/shooter_profile/<int:id>')
+@v1_firearm_profile_bp.route('/shooter_profile/<int:id>')
 def shooter_profile(id):
     selected_shooter = Shooter.query.get(id)
     return render_template('Shooter_Profile.html', selected_shooter=selected_shooter)
@@ -54,7 +61,7 @@ def shooter_profile(id):
 #----------------------------------------------------------------------------------------
 
 # SELECTED FIREARM PROFILE
-@app.route('/Fire-Arm_profile/<int:id>')
+@v1_firearm_profile_bp.route('/Fire-Arm_profile/<int:id>')
 def gun_profile(id):
     pistol = FireArm(
                                     gun_type = "Pistol", 
@@ -70,7 +77,7 @@ def gun_profile(id):
 #----------------------------------------------------------------------------------------
 
 # DELETE SHOOTER
-@app.route('/delete/<int:id>', methods=['GET','POST'])
+@v1_firearm_profile_bp.route('/delete/<int:id>', methods=['GET','POST'])
 def delete_shooter(id):
     print("==========Deleting Shooter===========")
     if request.method == 'POST':
@@ -90,7 +97,7 @@ def delete_shooter(id):
 #----------------------------------------------------------------------------------------
 
 # LOGOUT USER *same as register shooter
-@app.route('/logout')
+@v1_firearm_profile_bp.route('/logout')
 def logout():
     print("**************users have been deleted*****************")
     session.pop("users", None)
@@ -98,11 +105,11 @@ def logout():
     return redirect(url_for('register'))
 
 # reads function but not sure how it does
-# with app.request_context(environ):
+# with v1_firearm_profile_bp.request_context(environ):
 #     assert request.method == "POST"
 
 
-if __name__== "__main__":
-    #creates the db if it does not exist
-    db.create_all()
-    app.run(debug = True)
+# if __name__== "__main__":
+#     #creates the db if it does not exist
+#     db.create_all()
+#     app.run(debug = True)

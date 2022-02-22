@@ -1,11 +1,11 @@
 <template>
   <div id="nav">
-    <router-link to="/register">Home</router-link> |
-    <router-link to="/guns_list">List of Guns</router-link> |
-    <router-link to="/shooters">Shooters</router-link>
+    <router-link to="/KumaArms/register">Home</router-link> |
+    <router-link to="/KumaArms/guns_list">List of Guns</router-link> |
+    <router-link to="/KumaArms/shooters">Shooters</router-link>
   </div>
   <router-view/>
-</template>
+</template> 
 
 
 

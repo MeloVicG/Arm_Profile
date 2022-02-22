@@ -36,8 +36,6 @@ export default {
   },
 
   methods:{
-
-
     submit(){
       // this.$axios.defaults.baseURL = process.env.VUE_APP_AUTHENTICATION_URL
       location.reload()

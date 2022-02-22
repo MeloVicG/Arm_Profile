@@ -12,12 +12,12 @@ const routes = [
     component: Home
   },
   {
-    path: '/register',
+    path: '/KumaArms/register',
     name: 'Register',
     component: Register
   },
   {
-    path: '/guns_list',
+    path: '/KumaArms/guns_list',
     name: 'GunsList',
     component: GunsList
     // route level code-splitting
@@ -28,12 +28,12 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ '../views/Guns_List.vue')
   },
   {
-    path: '/gun_profile',
+    path: '/KumaArms/gun_profile',
     name: 'GunProfile',
     component: GunProfile
   },
   {
-    path: '/shooters',
+    path: '/KumaArms/shooters',
     name: 'Shooters',
     component: Shooters
   },

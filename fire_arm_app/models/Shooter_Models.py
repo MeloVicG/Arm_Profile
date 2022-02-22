@@ -1,18 +1,23 @@
-from flask import Flask
+# from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+# from api import db
+from api import create_app, db
+# db = create_app().db
+app = create_app()
 
-app = Flask(__name__) # app here goes with model - no longer needed in app
-app.config['SECRET_KEY'] = "SECRET_KEY"
-
+# app = Flask(__name__) # app here goes with model - no longer needed in app
+# app.config['SECRET_KEY'] = "SECRET_KEY"
+    
 # # dictionary that accept new key values from me   --name of table--.db??
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
+# app.config['SQLALCHEMY_ECHO'] = True
 
 # make it so were not tracking modifications to the db
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # this is also takes care of our declaritive base and session -Megan Amendola (youtube)
-db = SQLAlchemy(app) 
+# https://www.youtube.com/watch?v=hek9vsW8oKs&ab_channel=Treehouse
+# db = SQLAlchemy(app)
 
 
 
