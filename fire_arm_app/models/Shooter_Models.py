@@ -1,14 +1,19 @@
 # from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 # from api import db
-from api import create_app, db
+from api.utils import create_app
 # db = create_app().db
 app = create_app()
+db = SQLAlchemy(app)
+
+# import sqlalchemy as db
+
 
 # app = Flask(__name__) # app here goes with model - no longer needed in app
 # app.config['SECRET_KEY'] = "SECRET_KEY"
     
-# # dictionary that accept new key values from me   --name of table--.db??
+# this is also takes care of our declaritive base and session -Megan Amendola (youtube)
+# dictionary that accept new key values from me   --name of table--.db??
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3'
 # app.config['SQLALCHEMY_ECHO'] = True
 
@@ -19,6 +24,8 @@ app = create_app()
 # https://www.youtube.com/watch?v=hek9vsW8oKs&ab_channel=Treehouse
 # db = SQLAlchemy(app)
 
+# db.create_all()
+# db.init_app(app)
 
 
 class Shooter(db.Model):

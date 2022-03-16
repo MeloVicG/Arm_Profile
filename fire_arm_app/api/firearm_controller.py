@@ -5,9 +5,14 @@ from flask import Flask, \
                 request, \
                 redirect, url_for, session
 
-from models.Shooter_Models import Shooter, FireArm, Parts
-from api import db
+from models.Shooter_Models import Shooter, FireArm, Parts, db
+from api.utils import create_app
+app = create_app() 
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3' # needs to go before SQLAlchemy()
+# app.config['SECRET_KEY'] = "SECRET_KEY"
+# app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Base = declarative_base() # TODO what does this do?? -binds to a model
 
@@ -17,7 +22,8 @@ from api import db
 # CORS(create_app)
 # db = SQLAlchemy(app) 
 
-v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix="/KumaArms")
+# http://exploreflask.com/en/latest/blueprints.html
+v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix="/KumaArms", static_folder="static")
 
 #-----------------------------------------------------------------------------------------------    
 #-----------------------------------------------------------------------------------------------    
@@ -33,7 +39,7 @@ def register():
     return render_template("Register.html")
 
 
-@v1_firearm_profile_bp.route('/shooters', methods=['POST', 'GET'])
+@v1_firearm_profile_bp.route('/shooters', methods=['POST', 'GET'], endpoint=None)
 def show_shooters():
     print("*******we are in the show all shooters page**********")
     if request.method == 'POST':
@@ -56,7 +62,8 @@ def show_shooters():
 @v1_firearm_profile_bp.route('/shooter_profile/<int:id>')
 def shooter_profile(id):
     selected_shooter = Shooter.query.get(id)
-    return render_template('Shooter_Profile.html', selected_shooter=selected_shooter)
+    return render_template('Shooter_Profile.html', selected_shooter=selected_shooter )
+    # return url_for('v1_firearm_profile_bp.Shooter_Profile', filename='ShooterProfileStyle.css')
 
 #----------------------------------------------------------------------------------------
 
@@ -86,12 +93,12 @@ def delete_shooter(id):
             db.session.delete(shooter_to_delete)
             db.session.commit()
             print("shooter has been deleted id:", id)
-            return redirect('/shooters')
+            return redirect('/KumaArms/shooters')
         except:
             print('delete shooter error')
-            return redirect('/shooters')
+            return redirect('/KumaArms/shooters')
     else:
-        return redirect(url_for('show_shooters'))
+        return redirect(url_for('v1_firearm_profile_bp.show_shooters'))
 
 
 #----------------------------------------------------------------------------------------
@@ -102,7 +109,7 @@ def logout():
     print("**************users have been deleted*****************")
     session.pop("users", None)
     print("**************returning to register page*****************")
-    return redirect(url_for('register'))
+    return redirect(url_for('v1_firearm_profile_bp.register'))
 
 # reads function but not sure how it does
 # with v1_firearm_profile_bp.request_context(environ):

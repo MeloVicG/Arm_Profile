@@ -20,26 +20,26 @@
                     <th>Description</th>
                     <th>Action</th>
                 </tr>
-                <form action="/logout">
+                <form action="/KumaArms/logout">
                     <button class='logoutButton'>Register A Shooter</button>
                 </form>
             </thead>
             <tbody>
                 {% for shooter in shooters %}
                 <tr>
-                    <td><a href="{{  url_for('shooter_profile', 
+                    <td><a href="{{  url_for('v1_firearm_profile_bp.shooter_profile', 
                                                 id=shooter._id, 
                                                 )  }}">{{ shooter.first_name }}</a>
                                                         </td>
                     <td>{{ shooter.last_name }}</td>
-                    <td><a href="{{  url_for('gun_profile', 
+                    <td><a href="{{  url_for('v1_firearm_profile_bp.gun_profile', 
                                                 id=shooter._id, 
                                                 )  }}">{{ shooter.firearm_preference }}</a>
                                                         </td>
                     <td>{{ shooter.description }}</td>
                     <!-- <form action="/delete/<int:id>"></form> -->
     <!-- delete button -->
-                    <form action="{{  url_for('delete_shooter', id=shooter._id)  }}" method='POST'>
+                    <form action="{{  url_for('v1_firearm_profile_bp.delete_shooter', id=shooter._id)  }}" method='POST'>
                         <td><button>Delete</button></td>
                     </form>
                 </tr>
