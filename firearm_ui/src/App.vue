@@ -1,15 +1,25 @@
 <template>
   <div id="nav">
     <router-link to="/KumaArms/register">Home</router-link> |
+    <!-- <Shooters/> -->
     <router-link to="/KumaArms/guns_list">List of Guns</router-link> |
     <router-link to="/KumaArms/shooters">Shooters</router-link>
   </div>
   <router-view/>
 </template> 
 
+<script>
+// import Shooters from './components/Shooters.vue'
+
+export default {
+  name: 'App',
+  components: {
+    // Shooters
+  }
+}
 
 
-
+</script>
 
 <style>
 #app {

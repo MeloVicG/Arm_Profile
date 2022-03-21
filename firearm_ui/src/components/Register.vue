@@ -22,13 +22,13 @@ body
           input(placeholder="Description" name="Desc" class="form-control" type="text")
         div  
           input(type="submit")
-        div
-          | fix _id connection to back
-    
+      button(@click="getShooters()") this to show list of shooters
+
 </template>
 
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Register',
   props: {
@@ -39,7 +39,25 @@ export default {
     submit(){
       // this.$axios.defaults.baseURL = process.env.VUE_APP_AUTHENTICATION_URL
       location.reload()
-    }
+    },
+      // work on create shooters
+     createShooters(){
+            axios.post('http://127.0.0.1:5000/KumaArms/shooters')
+            .then(res => {
+                console.log("this is the response: ", res);
+                // console.log(res.json);
+                // console.log(res.data);
+                // this.shotters = res.data
+                // this.shotters.push(...data)
+            })
+            .then(res => res.json)
+            .catch(err =>{
+                console.log(err);
+            })
+        }
+
+
+
   }
 }
 </script>

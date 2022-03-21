@@ -67,7 +67,7 @@ def shooter_profile(id):
 
 #----------------------------------------------------------------------------------------
 
-# SELECTED FIREARM PROFILE
+# SELECTED FIREARM PROFILE 
 @v1_firearm_profile_bp.route('/Fire-Arm_profile/<int:id>')
 def gun_profile(id):
     pistol = FireArm(
