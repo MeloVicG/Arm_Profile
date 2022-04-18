@@ -1,13 +1,15 @@
-# from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-# from api import db
 from api.utils import create_app
-# db = create_app().db
+
+# https://www.youtube.com/watch?v=kRNXKzfYrPU&t=466s&ab_channel=PrettyPrinted
+# we want to put Marshmellow with the Models?
+# from flask_marshmallow import Marshmallow
+from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
+
 app = create_app()
 db = SQLAlchemy(app)
-
-# import sqlalchemy as db
-
+# ma = Marshmallow(app)
+# TODO i wonder if this ma has to be moved to the utils...create_app()???
 
 # app = Flask(__name__) # app here goes with model - no longer needed in app
 # app.config['SECRET_KEY'] = "SECRET_KEY"
@@ -74,3 +76,23 @@ class Parts(db.Model):
         # self.FireArm = FireArm
 
 
+
+# Flask Marshmallow stuff
+class ShooterSchema(Schema):
+    # class Meta:
+        # model = Shooter
+    id = fields.Integer()
+    first_name = fields.String()
+    last_name = fields.String()
+    firearm_preference = fields.String()
+    description = fields.String()        
+
+class FireArmSchema(Schema):
+    # class Meta:
+        # model = FireArm
+    id = fields.Integer()
+    gun_type = fields.String()
+    gun_name = fields.String()
+    gun_parts = fields.String()
+    gun_bullet_type = fields.String()
+    gun_description = fields.String()

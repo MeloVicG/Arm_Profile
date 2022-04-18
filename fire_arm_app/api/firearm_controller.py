@@ -4,8 +4,10 @@ from flask import Flask, \
                 render_template, \
                 request, \
                 redirect, url_for, session
+# from flask_marshmallow import Marshmallow
+from flask import jsonify
 
-from models.Shooter_Models import Shooter, FireArm, Parts, db
+from models.Shooter_Models import Shooter, FireArm, Parts, db, ShooterSchema, FireArmSchema
 from api.utils import create_app
 app = create_app() 
 
@@ -38,9 +40,10 @@ def register():
     print("*******we are in the register page**********")
     return render_template("Register.html")
 
-
+# TODO Have to create 2 separate routes for POST & GET
+#   one for post create shooters and one for getting data
 @v1_firearm_profile_bp.route('/shooters', methods=['POST', 'GET'], endpoint=None)
-def show_shooters():
+def get_shooters():
     print("*******we are in the show all shooters page**********")
     if request.method == 'POST':
         shooter = Shooter(first_name=request.form['Fname'],
@@ -49,13 +52,23 @@ def show_shooters():
                           description=request.form['Desc']
                           )
         shooters = Shooter.query.all()
+        print('end',shooters)
+        shooter_schema = ShooterSchema(many=True)
         db.session.add(shooter)
         db.session.commit()
-        return render_template("Shooters.html", shooters=shooters)
+        # return render_template("Shooters.html", shooters=shooters)
+        return jsonify(output)
     else:
         shooters = Shooter.query.all()
-        return render_template("Shooters.html", shooters=shooters)
+        shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+        print('else1---->',shooters)
+        print('else2---->',shooter_schema)
+        output = shooter_schema.dump(shooters)
+        return jsonify(output)
+        # return jsonify({'gunnersssss': output})
 
+# TODO - current problem: json is loading but no data can be entered
+#      - Now the data loads but not html
 #----------------------------------------------------------------------------------------
 
 # SELECTED SHOOTER PROFILE

@@ -11,7 +11,9 @@ body
   .container
     h1.RegisterTitle Register Page
     .RegisterForm
-      form( action="shooters" method='POST' ) 
+      //- form( action='http://localhost:5000/KumaArms/shooters' method='POST' ) 
+      form( action=createShooters() method='POST' ) 
+        //- TODO need to fix this to localhost: 500 
         div
           input(placeholder="First Name" name="Fname" class="form-control" type="text")
         div  
@@ -22,7 +24,8 @@ body
           input(placeholder="Description" name="Desc" class="form-control" type="text")
         div  
           input(type="submit")
-      button(@click="getShooters()") this to show list of shooters
+          //- {{this.shooters}}
+      button(@click="getShooters()") show list of shooters
 
 </template>
 
@@ -35,11 +38,30 @@ export default {
     msg: String
   },
 
+  data: function(){
+    return {
+      shooters: []
+    }
+  },
+
   methods:{
     submit(){
       // this.$axios.defaults.baseURL = process.env.VUE_APP_AUTHENTICATION_URL
       location.reload()
     },
+
+    getShooters(){
+                axios.get('http://127.0.0.1:5000/KumaArms/shooters')
+                .then(res => {
+                    this.shooters = res.data
+                    // this.shooters.push(...res.data)
+                    console.log(res);
+                })
+                .catch(err =>{
+                    console.log("you have an error", err);
+                })
+            },
+
       // work on create shooters
      createShooters(){
             axios.post('http://127.0.0.1:5000/KumaArms/shooters')
@@ -47,16 +69,15 @@ export default {
                 console.log("this is the response: ", res);
                 // console.log(res.json);
                 // console.log(res.data);
-                // this.shotters = res.data
-                // this.shotters.push(...data)
+                this.shooters = res.data
+                this.shooters.push(...data, res.data)
             })
-            .then(res => res.json)
             .catch(err =>{
                 console.log(err);
             })
         }
 
-
+// TODO need to redirect to html with the data fetched from backend 4/17/22
 
   }
 }

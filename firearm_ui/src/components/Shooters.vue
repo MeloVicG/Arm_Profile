@@ -51,12 +51,10 @@ export default {
             axios.get('http://127.0.0.1:5000/KumaArms/shooters')
             .then(res => {
                 console.log("this is the response: ", res);
-                // console.log(res.json);
                 // console.log(res.data);
                 // this.shotters = res.data
                 // this.shotters.push(...data)
             })
-            .then(res => res.json)
             .catch(err =>{
                 console.log(err);
             })
