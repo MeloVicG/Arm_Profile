@@ -11,8 +11,8 @@ body
   .container
     h1.RegisterTitle Register Page
     .RegisterForm
-      //- form( action='http://localhost:5000/KumaArms/shooters' method='POST' ) 
-      form( action=createShooters() method='POST' ) 
+      //- form( action=createShooters() method='POST' ) 
+      form( action='http://localhost:5000/KumaArms/shooters' method='POST' ) 
         //- TODO need to fix this to localhost: 500 
         div
           input(placeholder="First Name" name="Fname" class="form-control" type="text")
@@ -38,11 +38,23 @@ export default {
     msg: String
   },
 
-  data: function(){
+  data(){
     return {
       shooters: []
-    }
+    };
   },
+
+  // mounted(){
+  //   axios.get('http://127.0.0.1:5000/KumaArms/shooters')
+  //     .then(res => {
+  //         this.shooters = res.data
+  //         // this.shooters.push(...res.data)
+  //         console.log(res);
+  //     })
+  //     .catch(err =>{
+  //         console.log("you have an error", err);
+  //     })
+  // },
 
   methods:{
     submit(){
@@ -51,36 +63,34 @@ export default {
     },
 
     getShooters(){
-                axios.get('http://127.0.0.1:5000/KumaArms/shooters')
-                .then(res => {
-                    this.shooters = res.data
-                    // this.shooters.push(...res.data)
-                    console.log(res);
-                })
-                .catch(err =>{
-                    console.log("you have an error", err);
-                })
-            },
+      axios.get('http://127.0.0.1:5000/KumaArms/shooters')
+      .then(res => {
+          this.shooters = res.data
+          // this.shooters.push(...res.data)
+          console.log(res);
+      })
+      .catch(err =>{
+          console.log("you have an error", err);
+      })
+    },
 
       // work on create shooters
-     createShooters(){
-            axios.post('http://127.0.0.1:5000/KumaArms/shooters')
-            .then(res => {
-                console.log("this is the response: ", res);
-                // console.log(res.json);
-                // console.log(res.data);
-                this.shooters = res.data
-                this.shooters.push(...data, res.data)
-            })
-            .catch(err =>{
-                console.log(err);
-            })
-        }
-
-// TODO need to redirect to html with the data fetched from backend 4/17/22
-
+    //  createShooters(){
+    //   axios.post('http://127.0.0.1:5000/KumaArms/shooters')
+    //   .then(res => {
+    //       console.log("this is the response: ", res);
+    //       // console.log(res.json);
+    //       // console.log(res.data);
+    //       this.shooters = res.data
+    //       this.shooters.push(...data, res.data)
+    //   })
+    //   .catch(err =>{
+    //       console.log(err);
+    //   })
+    // }
   }
 }
+// TODO need to redirect to html with the data fetched from backend 4/17/22
 </script>
 
 
