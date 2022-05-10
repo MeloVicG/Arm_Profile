@@ -22,8 +22,8 @@ body
                     th FireArm Preference
                     th Description
             tbody
-                tr(v-for="shooter in shooters" :key="shooter.shooter_id")
-                    td {{shooter.shooter_id}}
+                tr(v-for="shooter in shooters" :key="shooter._id")
+                    td {{shooter._id}}
                     td {{shooter.first_name}}
                     td {{shooter.last_name}}
                     td {{shooter.firearm_preference}}

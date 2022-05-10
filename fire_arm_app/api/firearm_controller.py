@@ -40,36 +40,44 @@ def register():
     print("*******we are in the register page**********")
     return render_template("Register.html")
 
+#----------------------------------------------------------------------------------------
+
 # TODO Have to create 2 separate routes for POST & GET
 #   one for post create shooters and one for getting data
-@v1_firearm_profile_bp.route('/shooters', methods=['POST', 'GET'], endpoint=None)
+@v1_firearm_profile_bp.route('/shooters', methods=['GET'], endpoint=None)
 def get_shooters():
-    print("*******we are in the POST show all shooters page**********")
-    if request.method == 'POST':
-        shooter = Shooter(
-                        #   shooter_id=Shooter.query.get_id(),
-                          first_name=request.form['Fname'],
-                          last_name=request.form['Lname'],
-                          firearm_preference=request.form['Gpreference'],
-                          description=request.form['Desc']
-                          )
-        shooters = Shooter.query.all()
-        shooter_schema = ShooterSchema(many=True)
-        db.session.add(shooter)
-        db.session.commit()
-        output = shooter_schema.dump(shooters)
-        return jsonify(output)
-    else:
-        print("*******we are in the GET show all shooters page**********")
-        # shooter_id = Shooter.query.get()
-        shooters = Shooter.query.all()
-        shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
-        output = shooter_schema.dump(shooters)
-        return jsonify(output)
-        # return jsonify({'gunnersssss': output})
+    shooters_query = db.session.query(Shooter).all()
+    
+    print("*******we are in the GET show all shooters page**********")
+    # shooters = Shooter.query.all()
+    shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+    output = shooter_schema.dump(shooters_query)
 
-# TODO - current problem: json is loading but no data can be entered
-#      - Now the data loads but not html
+    return jsonify(output)
+
+#----------------------------------------------------------------------------------------
+
+@v1_firearm_profile_bp.route('/create_shooter', methods=['POST'], endpoint=None)
+def create_shooter():
+    print("*******we are in the POST create_shooter page**********")
+    shooter = Shooter(
+                    #   shooter_id=db.session.query.get_id(),
+                        first_name=request.form['Fname'],
+                        last_name=request.form['Lname'],
+                        firearm_preference=request.form['Gpreference'],
+                        description=request.form['Desc']
+                        )
+    shooter_schema = ShooterSchema(many=True)
+    db.session.add(shooter)
+    db.session.commit()
+    
+    shooters = Shooter.query.all()
+    output = shooter_schema.dump(shooters)
+    
+    return jsonify(output)    
+    # return redirect('/shooters')    
+# TODO need to work on redirecting after creating both front and backend
+
 #----------------------------------------------------------------------------------------
 
 # SELECTED SHOOTER PROFILE

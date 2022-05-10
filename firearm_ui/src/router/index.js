@@ -16,6 +16,15 @@ const routes = [
     name: 'Register',
     component: Register
   },
+  // {
+  //   path: '/KumaArms/create_shooter',
+  //   name: 'CreateShooter',
+  //   component: CreateShooter,
+  // },
+  {
+    path: '/KumaArms/create_shooter',
+    redirect: '/KumaArms/shooters',
+  },
   {
     path: '/KumaArms/guns_list',
     name: 'GunsList',
