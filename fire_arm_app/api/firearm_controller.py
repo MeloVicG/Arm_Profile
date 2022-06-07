@@ -5,7 +5,7 @@ from flask import Flask, \
                 request, \
                 redirect, url_for, session
 # from flask_marshmallow import Marshmallow
-from flask import jsonify
+from flask import jsonify, request
 
 from models.Shooter_Models import Shooter, FireArm, Parts, db, ShooterSchema, FireArmSchema
 from api.utils import create_app
@@ -31,14 +31,14 @@ v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix=
 #-----------------------------------------------------------------------------------------------    
 
 # @app.route('/')
-@v1_firearm_profile_bp.route('/')
-def index():
-    return '<h1>this is index page! go to /register</h1>'
+# @v1_firearm_profile_bp.route('/')
+# def index():
+#     return '<h1>this is index page! go to /register</h1>'
 
-@v1_firearm_profile_bp.route('/register')
-def register():
-    print("*******we are in the register page**********")
-    return render_template("Register.html")
+# @v1_firearm_profile_bp.route('/register')
+# def register():
+#     print("*******we are in the register page**********")
+#     return render_template("Register.html")
 
 #----------------------------------------------------------------------------------------
 
@@ -50,32 +50,56 @@ def get_shooters():
     
     print("*******we are in the GET show all shooters page**********")
     # shooters = Shooter.query.all()
+    # before marshmellow to receive json
     shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
     output = shooter_schema.dump(shooters_query)
 
     return jsonify(output)
 
-#----------------------------------------------------------------------------------------
 
-@v1_firearm_profile_bp.route('/create_shooter', methods=['POST'], endpoint=None)
+#----------------------------------------------------------------------------------------
+# TODO THIS NEEDS WORK
+@v1_firearm_profile_bp.route('/create_shooter', methods=['POST'])
 def create_shooter():
-    print("*******we are in the POST create_shooter page**********")
-    shooter = Shooter(
-                    #   shooter_id=db.session.query.get_id(),
-                        first_name=request.form['Fname'],
-                        last_name=request.form['Lname'],
-                        firearm_preference=request.form['Gpreference'],
-                        description=request.form['Desc']
-                        )
-    shooter_schema = ShooterSchema(many=True)
-    db.session.add(shooter)
-    db.session.commit()
-    
-    shooters = Shooter.query.all()
-    output = shooter_schema.dump(shooters)
-    
-    return jsonify(output)    
-    # return redirect('/shooters')    
+    # shooters_query = db.session.query(Shooter).all()
+
+    if request.method == "POST":
+        print("*******we are in the POST create_shooter page**********")
+        print("++++++", request.content_type)
+        post_shooter_data = request.get_json()
+        print("++++++++++++++++++++++++++++++++++++++++++++++++")
+        print('THIS IS THE POST_SHOOTER_DATA================:', post_shooter_data)
+        print("++++++++++++++++++++++++++++++++++++++++++++++++")
+        # adding before marshmellow
+        # shooter = Shooter(
+        #                   shooter_id=db.session.query.get_id(),
+        #                     first_name=request.form['Fname'],
+        #                     last_name=request.form['Lname'],
+        #                     firearm_preference=request.form['Gpreference'],
+        #                     description=request.form['Desc']
+        #                     )
+        # db.session.add(shooter)
+        # db.session.commit()
+        # 
+        # 
+        shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+        output = shooter_schema.dumps(post_shooter_data)
+
+        # print(shooter_schema)
+        print('!!!OUTPUT!!!',output)
+        # -------------------------------------------------------------------------------------
+        
+        # shooter_created = ShooterSchema({'first_name': post_shooter_data.get('first_name'),
+        #                     'last_name': post_shooter_data.get('last_name'),
+        #                     'firearm_preference': post_shooter_data.get('firearm_preference'),
+        #                     'description': post_shooter_data.get('description')
+        # })
+        # return shooter_created
+        return jsonify(output)
+    else:
+        print("request method is not POST")
+        print("*************************************************************************")
+        return    
 # TODO need to work on redirecting after creating both front and backend
 
 #----------------------------------------------------------------------------------------

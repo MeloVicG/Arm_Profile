@@ -12,17 +12,18 @@ body
     h1.RegisterTitle Register Page
     .RegisterForm
       //- form( action=createShooters() method='POST' ) 
-      form( @submit="createShooter()" method='POST' ) 
+      //- form( @submit.preventDefault="onSubmit" method='POST' ) 
+      form( @submit.preventDefault="onSubmit" ) 
         //- TODO need to fix this to localhost: 500 
         div
-          input(placeholder="First Name" v-model="msg" name="Fname" class="form-control" type="text")
-          | message is: {{msg}}
+          input(placeholder="First Name" v-model="addShooterForm.first_name" name="first_name" class="form-control" type="text")
+          | message is: {{addShooterForm.first_name}}
         div  
-          input(placeholder="Last Name" name="Lname" class="form-control" type="text")
+          input(placeholder="Last Name" v-model="addShooterForm.last_name" name="Lname" class="form-control" type="text")
         div  
-          input(placeholder="Fire Arm Preference" name="Gpreference" class="form-control" type="text")
+          input(placeholder="Fire Arm Preference" v-model="addShooterForm.FireArm" name="Gpreference" class="form-control" type="text")
         div  
-          input(placeholder="Description" name="Desc" class="form-control" type="text")
+          input(placeholder="Description" v-model="addShooterForm.Description" name="Desc" class="form-control" type="text")
         div  
           input(type="submit")
       button(@click="getShooters()") show list of shooters
@@ -40,57 +41,90 @@ export default {
 
   data(){
     return {
-      shooters: []
+      shooters: [],
+      addShooterForm:{
+        first_name:"",
+        Last_name:"",
+        FireArm:"",
+        Description:"",
+      }
     };
   },
 
-  mounted(){
-    axios.get('http://127.0.0.1:5000/KumaArms/shooters')
-      .then(res => {
-        this.shooters = res.data
-        console.log(res);
-      })
-      .catch(err =>{
-          console.log("you have an error", err);
-    })
-  },
+// when the DOM (template is loaded) mounted() will attach itself to the DOM and load the method
+  // mounted(){
+    // axios.get('http://127.0.0.1:5000/KumaArms/shooters')
+    //   .then(res => {
+    //     this.shooters = res.data
+    //     console.log(res);
+    //   })
+    //   .catch(err =>{
+    //       console.log("you have an error", err);
+    // })
+  // },
 
 
   methods:{
-    // submit(){
-      // this.$axios.defaults.baseURL = process.env.VUE_APP_AUTHENTICATION_URL
-      // location.reload()
-    // },
 
     getShooters(){
       axios.get('http://127.0.0.1:5000/KumaArms/shooters')
       .then(res => {
           this.shooters = res.data
-          // this.shooters.push(...res.data)
           console.log(res);
+          console.log(this.shooters);
       })
       .catch(err =>{
           console.log("you have an error", err);
       })
     },
 
-    // work on create shooters
-    createShooter(){
-      axios.post('http://127.0.0.1:5000/KumaArms/create_shooter')
-        .then(res => {
-          // e.preventDefault();
-          console.log("this is the response: ", res);
-          this.shooters = res.data;
-          this.shooters.push(...res.data, res.data);
-          // path: '/KumaArms/shooters',
-          // redirect: to => {Shooters}
+
+    // TODO PROBLEM IS SENDING 2 api requests need to figure out how to redirect
+    // 6/7/2022
+    createShooter(payload){ // parameter is automatic?
+      axios.post('http://127.0.0.1:5000/KumaArms/create_shooter', payload) //THIS SENDS AS A application/json
+      .then(() => {
+        console.log("this is the payload: ", payload);
+        this.getShooters()
+        // this.$router.push('http://localhost:8081/KumaArms/shooters')
+
       })
       .catch(err =>{
-          console.log(err);
+        console.log(err);
+        this.getShooters()
       })
+    },
+
+    initForm(){ // changes form back to original.
+      console.log("this is init------ ")
+      // console.log("this is the payload: ", payload)
+      this.addShooterForm.first_name = "",
+      this.addShooterForm.Last_name = "",
+      this.addShooterForm.FireArm = "",
+      this.addShooterForm.Description = ""
+      },
+
+    // onSubmit(){
+    onSubmit(){
+      // e.preventDefault();
+      const payload = {
+        first_name: this.addShooterForm.first_name,
+        last_name: this.addShooterForm.last_name,
+        fire_arm: this.addShooterForm.FireArm,
+        description: this.addShooterForm.Description 
+      }
+      this.createShooter(payload);
+      this.initForm;
+      self.$router.push('http://127.0.0.1:5000/KumaArms/create_shooter')
     }
+  }, // this is methods
+
+  // this is similar to mounted???
+  created(){
+    this.getShooters()
   }
-}
+
+} // this is export default
 // TODO need to redirect to html with the data fetched from backend 4/17/22
 </script>
 

@@ -22,7 +22,7 @@ body
                     th FireArm Preference
                     th Description
             tbody
-                tr(v-for="shooter in shooters" :key="shooter._id")
+                tr(v-for="shooter, _id in getShooters()" :key="shooter._id")
                     td {{shooter._id}}
                     td {{shooter.first_name}}
                     td {{shooter.last_name}}
@@ -48,63 +48,40 @@ export default {
         }
     },
     
-  mounted(){
-    axios.get('http://127.0.0.1:5000/KumaArms/shooters')
-        .then(res => {
-            this.shooters = res.data
-            // this.shooters.push(...res.data)
-            console.log(this.shooters);
-        })
-        .catch(err =>{
-            console.log("you have an error: ", err);
-        })
-  },
+//   mounted(){
+//     axios.get('http://127.0.0.1:5000/KumaArms/shooters')
+//         .then(res => {
+//             this.shooters = res.data
+//             // this.shooters.push(...res.data)
+//             console.log(this.shooters);
+//         })
+//         .catch(err =>{
+//             console.log("you have an error: ", err);
+//         })
+//   },
 
     methods:{
         getShooters(){
             axios.get('http://127.0.0.1:5000/KumaArms/shooters')
             .then(res => {
+                this.shooters = res.data
                 console.log("this is the response: ", res);
-                // console.log(res.data);
-                // this.shotters = res.data
-                // this.shotters.push(...data)
             })
             .catch(err =>{
                 console.log(err);
             })
         }
+    },
+
+    created(){
+        // axios.get('http://localhost:5000/KumaArms/shooters')
+        // .then(res => ("this is the res.json", res.json))
+        // .then(data => this.shotters = data)
+        // .catch(err => console.log("this is the error", err))
+        this.getShooters()
     }
-    // methods:{
-    //     getShooters(){
-    //         fetch('http://localhost:5000/KumaArms/shooters', {
-    //             method:'GET',
-    //             // headers:{
-    //             //     "Content-Type":"application/json"
-    //             // }
-    //         })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log("this is the data!!", data);
-    //             this.shotters.push(...data)
-    //         })
-    //         .catch(error => {
-    //             console.log("this is the error!!: ",error);
-    //         })
-    //     }
-    // },
-    // mounted(){
-    //     fetch('http://localhost:5000/KumaArms/shooters')
-    //     .then(res => res.json())
-    //     .then(data => this.shotters = data)
-    //     .catch(error => console.log("this is catch error: ", error))
-    // }
-    // created(){
-    //     axios.get('http://localhost:5000/KumaArms/shooters')
-    //     .then(res => ("this is the res.json", res.json))
-    //     .then(data => this.shotters = data)
-    //     .catch(err => console.log("this is the error", err))
-    // }
-}
+    
+} // export default
 
 
 </script>

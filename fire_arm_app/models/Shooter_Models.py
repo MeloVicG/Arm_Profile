@@ -54,7 +54,7 @@ class FireArm(db.Model):
     gun_parts = db.Column(db.String(length=50), nullable=True)
     gun_bullet_type = db.Column(db.String(length=100), nullable=True)
     gun_description = db.Column(db.String(length=100), nullable=True)
-    # Shooters = relationship("Shooters", backref='fiream_preference')
+    # Shooters = relation   ship("Shooters", backref='fiream_preference')
     
     def __init__(self, gun_type, gun_name, gun_parts, gun_bullet_type, gun_description):
         self.gun_type = gun_type
