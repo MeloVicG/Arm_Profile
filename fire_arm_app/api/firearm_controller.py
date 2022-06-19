@@ -48,12 +48,11 @@ v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix=
 def get_shooters():
     shooters_query = db.session.query(Shooter).all()
     
-    print("*******we are in the GET show all shooters page**********")
+    print("******************  we are in the GET show all shooters page  **********************")
     # shooters = Shooter.query.all()
     # before marshmellow to receive json
     shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
     output = shooter_schema.dump(shooters_query)
-
     return jsonify(output)
 
 
@@ -64,12 +63,13 @@ def create_shooter():
     # shooters_query = db.session.query(Shooter).all()
 
     if request.method == "POST":
+        print("")
         print("*******we are in the POST create_shooter page**********")
         print("++++++", request.content_type)
         post_shooter_data = request.get_json()
-        print("++++++++++++++++++++++++++++++++++++++++++++++++")
         print('THIS IS THE POST_SHOOTER_DATA================:', post_shooter_data)
-        print("++++++++++++++++++++++++++++++++++++++++++++++++")
+        print("")
+        # -----------------------------------------------------------------------------
         # adding before marshmellow
         # shooter = Shooter(
         #                   shooter_id=db.session.query.get_id(),
@@ -80,27 +80,39 @@ def create_shooter():
         #                     )
         # db.session.add(shooter)
         # db.session.commit()
-        # 
+        # -----------------------------------------------------------------------------
         # 
         shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+        
+        # turns into json data?
         output = shooter_schema.dumps(post_shooter_data)
 
         # print(shooter_schema)
         print('!!!OUTPUT!!!',output)
+        # print('!!!SHOOTER SCHEMA!!!',shooter_schema)
         # -------------------------------------------------------------------------------------
-        
+        # -------------------------------------------------------------------------------------
+        # TODO after receiving json data need to put into db
+        #   need to figure out how to put json data into db
+
+        # ADD to marshmellow after receiving Json
         # shooter_created = ShooterSchema({'first_name': post_shooter_data.get('first_name'),
-        #                     'last_name': post_shooter_data.get('last_name'),
-        #                     'firearm_preference': post_shooter_data.get('firearm_preference'),
-        #                     'description': post_shooter_data.get('description')
+        #                             'last_name': post_shooter_data.get('last_name'),
+        #                             'firearm_preference': post_shooter_data.get('firearm_preference'),
+        #                             'description': post_shooter_data.get('description')
         # })
+        # db.session.add(shooter_created)
+        # db.session.commit()
         # return shooter_created
+        # print("----SHOOOTER CREATED------", shooter_created)
+        # return jsonify(output)
         return jsonify(output)
+        # -------------------------------------------------------------------------------------
     else:
         print("request method is not POST")
         print("*************************************************************************")
-        return    
-# TODO need to work on redirecting after creating both front and backend
+    # return jsonify(shooter_schema)
+        
 
 #----------------------------------------------------------------------------------------
 

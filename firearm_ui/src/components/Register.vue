@@ -16,7 +16,7 @@ body
       form( @submit.preventDefault="onSubmit" ) 
         //- TODO need to fix this to localhost: 500 
         div
-          input(placeholder="First Name" v-model="addShooterForm.first_name" name="first_name" class="form-control" type="text")
+          input(placeholder="First Name" v-model="addShooterForm.first_name" name="Fname" class="form-control" type="text")
           | message is: {{addShooterForm.first_name}}
         div  
           input(placeholder="Last Name" v-model="addShooterForm.last_name" name="Lname" class="form-control" type="text")
@@ -69,9 +69,7 @@ export default {
     getShooters(){
       axios.get('http://127.0.0.1:5000/KumaArms/shooters')
       .then(res => {
-          this.shooters = res.data
-          console.log(res);
-          console.log(this.shooters);
+          console.log('list of shooters',res.data);
       })
       .catch(err =>{
           console.log("you have an error", err);
@@ -84,9 +82,10 @@ export default {
     createShooter(payload){ // parameter is automatic?
       axios.post('http://127.0.0.1:5000/KumaArms/create_shooter', payload) //THIS SENDS AS A application/json
       .then(() => {
-        console.log("this is the payload: ", payload);
+        // console.log("this is the payload: ", payload);
         this.getShooters()
-        // this.$router.push('http://localhost:8081/KumaArms/shooters')
+        // this.shooters = [...payload]
+        // console.log('Shooters AFTER------',this.shooters);
 
       })
       .catch(err =>{
@@ -97,6 +96,7 @@ export default {
 
     initForm(){ // changes form back to original.
       console.log("this is init------ ")
+      console.log("changed back to '' ")
       // console.log("this is the payload: ", payload)
       this.addShooterForm.first_name = "",
       this.addShooterForm.Last_name = "",
@@ -115,7 +115,7 @@ export default {
       }
       this.createShooter(payload);
       this.initForm;
-      self.$router.push('http://127.0.0.1:5000/KumaArms/create_shooter')
+      this.$router.push('/KumaArms/shooters')
     }
   }, // this is methods
 

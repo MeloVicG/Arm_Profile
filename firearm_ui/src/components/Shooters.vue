@@ -22,7 +22,7 @@ body
                     th FireArm Preference
                     th Description
             tbody
-                tr(v-for="shooter, _id in getShooters()" :key="shooter._id")
+                tr(v-for="shooter in this.shooters" )
                     td {{shooter._id}}
                     td {{shooter.first_name}}
                     td {{shooter.last_name}}
@@ -74,10 +74,6 @@ export default {
     },
 
     created(){
-        // axios.get('http://localhost:5000/KumaArms/shooters')
-        // .then(res => ("this is the res.json", res.json))
-        // .then(data => this.shotters = data)
-        // .catch(err => console.log("this is the error", err))
         this.getShooters()
     }
     
