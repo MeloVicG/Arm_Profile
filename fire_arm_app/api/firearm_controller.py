@@ -6,6 +6,7 @@ from flask import Flask, \
                 redirect, url_for, session
 # from flask_marshmallow import Marshmallow
 from flask import jsonify, request
+from marshmallow import ValidationError
 
 from models.Shooter_Models import Shooter, FireArm, Parts, db, ShooterSchema, FireArmSchema
 from api.utils import create_app
@@ -47,7 +48,7 @@ v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix=
 @v1_firearm_profile_bp.route('/shooters', methods=['GET'], endpoint=None)
 def get_shooters():
     shooters_query = db.session.query(Shooter).all()
-    
+    print("")
     print("******************  we are in the GET show all shooters page  **********************")
     # shooters = Shooter.query.all()
     # before marshmellow to receive json
@@ -65,11 +66,16 @@ def create_shooter():
     if request.method == "POST":
         print("")
         print("*******we are in the POST create_shooter page**********")
+        print("++++++")
         print("++++++", request.content_type)
-        post_shooter_data = request.get_json()
-        print('THIS IS THE POST_SHOOTER_DATA================:', post_shooter_data)
+        shooter_data = request.get_json() # an object
+        print('THIS IS THE SHOOTER_DATA================:', shooter_data) 
+        # print("reqjson",request.json) # this is same as get_json()
         print("")
         # -----------------------------------------------------------------------------
+        # @@@@@@@@@@@@@@@
+        # TODO need to successfully add into database as of right now it works but nothing being added
+        # @@@@@@@@@@@@@@@
         # adding before marshmellow
         # shooter = Shooter(
         #                   shooter_id=db.session.query.get_id(),
@@ -82,36 +88,45 @@ def create_shooter():
         # db.session.commit()
         # -----------------------------------------------------------------------------
         # 
-        shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+        # shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
         
         # turns into json data?
-        output = shooter_schema.dumps(post_shooter_data)
-
-        # print(shooter_schema)
-        print('!!!OUTPUT!!!',output)
-        # print('!!!SHOOTER SCHEMA!!!',shooter_schema)
+        # output = shooter_schema.dumps(shooter_data)
         # -------------------------------------------------------------------------------------
         # -------------------------------------------------------------------------------------
         # TODO after receiving json data need to put into db
         #   need to figure out how to put json data into db
 
         # ADD to marshmellow after receiving Json
-        # shooter_created = ShooterSchema({'first_name': post_shooter_data.get('first_name'),
-        #                             'last_name': post_shooter_data.get('last_name'),
-        #                             'firearm_preference': post_shooter_data.get('firearm_preference'),
-        #                             'description': post_shooter_data.get('description')
-        # })
-        # db.session.add(shooter_created)
-        # db.session.commit()
+        # shooter_created = ShooterSchema('first_name': shooter_data.get('first_name'),
+        #                                 'last_name': shooter_data.get('last_name'),
+        #                                 'firearm_preference': shooter_data.get('firearm_preference'),
+        #                                 'description': shooter_data.get('description'))
+        print("")
+        try:
+            shooter_created = ShooterSchema() # request.get_json()?? (many=True)
+            shooter_schema = shooter_created.load(shooter_data) # request.get_json()
+            print("")
+            print("added to db!")
+            db.session.add(shooter_schema)
+            db.session.commit()
+            
+            return ShooterSchema().dump(shooter_schema) #, many=True
+        except ValidationError as e:
+            print("WE HAVE A VALIDATION ERROR",)
+            print(e)
+            # print(e.messages)
+            # print(e.valid_data)
+
+
+        print("nothing happened????")
         # return shooter_created
         # print("----SHOOOTER CREATED------", shooter_created)
         # return jsonify(output)
-        return jsonify(output)
         # -------------------------------------------------------------------------------------
     else:
         print("request method is not POST")
         print("*************************************************************************")
-    # return jsonify(shooter_schema)
         
 
 #----------------------------------------------------------------------------------------
@@ -157,6 +172,20 @@ def delete_shooter(id):
             return redirect('/KumaArms/shooters')
     else:
         return redirect(url_for('v1_firearm_profile_bp.show_shooters'))
+
+
+#----------------------------------------------------------------------------------------
+# EDIT SHOOTER
+@v1_firearm_profile_bp.route('/edit/<int:id>', methods=['PUT'])
+def edit_shooter(id):
+    if request.method == "PUT":
+        # put_shooter_data = request.get_json()
+        print('==============================================================')
+        print('WE ARE IN THE EDIT_SHOOTER PAGE')
+        print('==============================================================')
+    else:
+        print('error: type is not PUT:', request.content_type )
+
 
 
 #----------------------------------------------------------------------------------------

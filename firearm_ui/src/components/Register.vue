@@ -89,7 +89,7 @@ export default {
 
       })
       .catch(err =>{
-        console.log(err);
+        console.log('this is your createShooter error: ',err);
         this.getShooters()
       })
     },
@@ -110,7 +110,7 @@ export default {
       const payload = {
         first_name: this.addShooterForm.first_name,
         last_name: this.addShooterForm.last_name,
-        fire_arm: this.addShooterForm.FireArm,
+        firearm_preference: this.addShooterForm.FireArm,
         description: this.addShooterForm.Description 
       }
       this.createShooter(payload);

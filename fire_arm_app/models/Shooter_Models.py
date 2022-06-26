@@ -4,7 +4,7 @@ from api.utils import create_app
 # we want to put Marshmellow with the Models?
 # from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 
 app = create_app()
 db = SQLAlchemy(app)
@@ -85,7 +85,14 @@ class ShooterSchema(Schema):
     first_name = fields.String()
     last_name = fields.String()
     firearm_preference = fields.String()
-    description = fields.String()        
+    description = fields.String()       
+
+    @post_load
+    def load_shooter(self, data, *args, **kwargs):
+        """
+        Retuns a shooter model with data provided
+        """
+        return Shooter(**data)
 
 class FireArmSchema(Schema):
     # class Meta:

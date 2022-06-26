@@ -1,11 +1,4 @@
 <template lang="pug">
-//- link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous")
-//- link(type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css")
-//- link(type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css")
-//- script(src="https://unpkg.com/vue@latest/dist/vue.min.js")
-//- script(src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js")
-//- script(src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js")
-
 body
     button(@click="getShooters()") this to show list of shooters
     |
@@ -21,6 +14,7 @@ body
                     th Last Name
                     th FireArm Preference
                     th Description
+                    th Action
             tbody
                 tr(v-for="shooter in this.shooters" )
                     td {{shooter._id}}
@@ -28,6 +22,8 @@ body
                     td {{shooter.last_name}}
                     td {{shooter.firearm_preference}}
                     td {{shooter.description}}
+                    button.btn.btn-danger Delete
+                    button.btn.btn-info   Edit
                         //- td.a( href=url_for('KumaArms/shooter_profile', id=shooter._id,) ) {{ shooter.first_name }}
                     //- td.router-link(:to="{ name:"ShooterProfile" , params: {id:shooter._id}}")
                     //- <!-- <form action="/delete/<int:id>"></form> -->
