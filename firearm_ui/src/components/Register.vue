@@ -77,22 +77,21 @@ export default {
     },
 
 
-    // TODO PROBLEM IS SENDING 2 api requests need to figure out how to redirect
-    // 6/7/2022
-    createShooter(payload){ // parameter is automatic?
-      axios.post('http://127.0.0.1:5000/KumaArms/create_shooter', payload) //THIS SENDS AS A application/json
-      .then(() => {
-        // console.log("this is the payload: ", payload);
-        this.getShooters()
-        // this.shooters = [...payload]
-        // console.log('Shooters AFTER------',this.shooters);
+    // TODO PROBLEM IS SENDING 2 api requests need to figure out how to redirect 6/7/2022
+      createShooter(payload){ // parameter is automatic?
+        axios.post('http://127.0.0.1:5000/KumaArms/create_shooter', payload) //THIS SENDS AS A application/json
+        .then(() => {
+          // console.log("this is the payload: ", payload);
+          this.getShooters()
+          // this.shooters = [...payload]
+          // console.log('Shooters AFTER------',this.shooters);
 
-      })
-      .catch(err =>{
-        console.log('this is your createShooter error: ',err);
-        this.getShooters()
-      })
-    },
+        })
+        .catch(err =>{
+          console.log('this is your createShooter error: ',err);
+          this.getShooters()
+        })
+      },
 
     initForm(){ // changes form back to original.
       console.log("this is init------ ")

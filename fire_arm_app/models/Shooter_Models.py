@@ -2,13 +2,14 @@ from api.utils import create_app
 
 # https://www.youtube.com/watch?v=kRNXKzfYrPU&t=466s&ab_channel=PrettyPrinted
 # we want to put Marshmellow with the Models?
-# from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields, post_load
+from flask_marshmallow import Marshmallow
 
 app = create_app()
 db = SQLAlchemy(app)
-# ma = Marshmallow(app)
+ma = Marshmallow(app)
+
 # TODO i wonder if this ma has to be moved to the utils...create_app()???
 
 # app = Flask(__name__) # app here goes with model - no longer needed in app
@@ -31,7 +32,7 @@ db = SQLAlchemy(app)
 
 
 class Shooter(db.Model):
-    # __table__ = "user" # we dont have to do this is flask sqlalchemy
+    # __table__ = "shoooooooter" # we dont have to do this is flask sqlalchemy
 
     _id = db.Column("id", db.Integer(),primary_key=True)
     first_name = db.Column(db.String(length=30), nullable=False)
@@ -40,7 +41,8 @@ class Shooter(db.Model):
     description = db.Column(db.String(length=200), nullable=True)
     # FireArms = relationship("FireArm", backref="shooters")
 
-    def __init__(self, first_name, last_name, firearm_preference, description):
+    def __init__(self, _id, first_name, last_name, firearm_preference, description):
+        self._id = _id
         self.first_name = first_name
         self.last_name = last_name
         self.firearm_preference = firearm_preference
@@ -54,9 +56,10 @@ class FireArm(db.Model):
     gun_parts = db.Column(db.String(length=50), nullable=True)
     gun_bullet_type = db.Column(db.String(length=100), nullable=True)
     gun_description = db.Column(db.String(length=100), nullable=True)
-    # Shooters = relation   ship("Shooters", backref='fiream_preference')
+    # Shooters = relationship("Shooters", backref='fiream_preference')
     
-    def __init__(self, gun_type, gun_name, gun_parts, gun_bullet_type, gun_description):
+    def __init__(self, _id, gun_type, gun_name, gun_parts, gun_bullet_type, gun_description):
+        self._id = _id
         self.gun_type = gun_type
         self.gun_name = gun_name
         self.gun_parts = gun_parts
@@ -81,7 +84,7 @@ class Parts(db.Model):
 class ShooterSchema(Schema):
     # class Meta:
         # model = Shooter
-    id = fields.Integer()
+    _id = fields.Integer()
     first_name = fields.String()
     last_name = fields.String()
     firearm_preference = fields.String()
@@ -93,6 +96,17 @@ class ShooterSchema(Schema):
         Retuns a shooter model with data provided
         """
         return Shooter(**data)
+
+# class ShooterSchema(ma.SQLAlchemySchema):
+#     class Meta:
+#         model = Shooter
+#         # fields= ('_id', 'first_name', 'last_name', 'firearm_preference', 'description')
+#     _id = ma.auto_field()
+#     first_name = ma.auto_field()
+#     last_name = ma.auto_field()
+#     firearm_preference = ma.auto_field()
+#     description = ma.auto_field()
+
 
 class FireArmSchema(Schema):
     # class Meta:

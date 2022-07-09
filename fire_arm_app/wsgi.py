@@ -9,7 +9,6 @@ app = create_app()
 
 if __name__== "__main__":
     #creates the db if it does not exist
-    
     db.create_all()
     db.init_app(app)
     app.run(debug = True)

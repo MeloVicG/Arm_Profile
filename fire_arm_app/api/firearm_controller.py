@@ -12,123 +12,57 @@ from models.Shooter_Models import Shooter, FireArm, Parts, db, ShooterSchema, Fi
 from api.utils import create_app
 app = create_app() 
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gun_profile.sqlite3' # needs to go before SQLAlchemy()
-# app.config['SECRET_KEY'] = "SECRET_KEY"
-# app.config['SQLALCHEMY_ECHO'] = True
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Base = declarative_base() # TODO what does this do?? -binds to a model
-
-# engine = create_engine("postgresql://vic:gar@localhost/gun_profile")
-# connection = engine.connect()
-# app = Flask(__name__) # app here goes with model - no longer needed in app
-# CORS(create_app)
-# db = SQLAlchemy(app) 
 
 # http://exploreflask.com/en/latest/blueprints.html
 v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix="/KumaArms", static_folder="static")
 
 #-----------------------------------------------------------------------------------------------    
-#-----------------------------------------------------------------------------------------------    
-
-# @app.route('/')
-# @v1_firearm_profile_bp.route('/')
-# def index():
-#     return '<h1>this is index page! go to /register</h1>'
-
-# @v1_firearm_profile_bp.route('/register')
-# def register():
-#     print("*******we are in the register page**********")
-#     return render_template("Register.html")
-
 #----------------------------------------------------------------------------------------
 
-# TODO Have to create 2 separate routes for POST & GET
-#   one for post create shooters and one for getting data
 @v1_firearm_profile_bp.route('/shooters', methods=['GET'], endpoint=None)
 def get_shooters():
     shooters_query = db.session.query(Shooter).all()
-    print("")
+    print("|")
+    print("", shooters_query)
     print("******************  we are in the GET show all shooters page  **********************")
     # shooters = Shooter.query.all()
     # before marshmellow to receive json
-    shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
+    shooter_schema = ShooterSchema(many=True) # many=True - if multiple data show in list
     output = shooter_schema.dump(shooters_query)
     return jsonify(output)
 
 
 #----------------------------------------------------------------------------------------
-# TODO THIS NEEDS WORK
+#               ✔✔✔✔✔✔✔✔ COMPLETE ✔✔✔✔✔✔✔✔
 @v1_firearm_profile_bp.route('/create_shooter', methods=['POST'])
 def create_shooter():
     # shooters_query = db.session.query(Shooter).all()
 
     if request.method == "POST":
-        print("")
         print("*******we are in the POST create_shooter page**********")
-        print("++++++")
-        print("++++++", request.content_type)
         shooter_data = request.get_json() # an object
-        print('THIS IS THE SHOOTER_DATA================:', shooter_data) 
-        # print("reqjson",request.json) # this is same as get_json()
-        print("")
-        # -----------------------------------------------------------------------------
-        # @@@@@@@@@@@@@@@
-        # TODO need to successfully add into database as of right now it works but nothing being added
-        # @@@@@@@@@@@@@@@
-        # adding before marshmellow
-        # shooter = Shooter(
-        #                   shooter_id=db.session.query.get_id(),
-        #                     first_name=request.form['Fname'],
-        #                     last_name=request.form['Lname'],
-        #                     firearm_preference=request.form['Gpreference'],
-        #                     description=request.form['Desc']
-        #                     )
-        # db.session.add(shooter)
-        # db.session.commit()
-        # -----------------------------------------------------------------------------
-        # 
-        # shooter_schema = ShooterSchema(many=True) # what is this many=True? was able to see my db after this... change into list?
-        
-        # turns into json data?
-        # output = shooter_schema.dumps(shooter_data)
-        # -------------------------------------------------------------------------------------
-        # -------------------------------------------------------------------------------------
-        # TODO after receiving json data need to put into db
-        #   need to figure out how to put json data into db
+        print("|")
 
         # ADD to marshmellow after receiving Json
-        # shooter_created = ShooterSchema('first_name': shooter_data.get('first_name'),
-        #                                 'last_name': shooter_data.get('last_name'),
-        #                                 'firearm_preference': shooter_data.get('firearm_preference'),
-        #                                 'description': shooter_data.get('description'))
-        print("")
         try:
             shooter_created = ShooterSchema() # request.get_json()?? (many=True)
             shooter_schema = shooter_created.load(shooter_data) # request.get_json()
-            print("")
-            print("added to db!")
+            print("|")
             db.session.add(shooter_schema)
             db.session.commit()
+            print(f"{shooter_schema} added to db!")
             
             return ShooterSchema().dump(shooter_schema) #, many=True
         except ValidationError as e:
             print("WE HAVE A VALIDATION ERROR",)
             print(e)
-            # print(e.messages)
+            # print(e.messages)s
             # print(e.valid_data)
 
-
-        print("nothing happened????")
-        # return shooter_created
-        # print("----SHOOOTER CREATED------", shooter_created)
-        # return jsonify(output)
-        # -------------------------------------------------------------------------------------
     else:
         print("request method is not POST")
         print("*************************************************************************")
         
-
 #----------------------------------------------------------------------------------------
 
 # SELECTED SHOOTER PROFILE
@@ -155,34 +89,94 @@ def gun_profile(id):
 
 
 #----------------------------------------------------------------------------------------
+# TODO WORK ON DELETE AND PUT SHOOTERS
 
 # DELETE SHOOTER
-@v1_firearm_profile_bp.route('/delete/<int:id>', methods=['GET','POST'])
+@v1_firearm_profile_bp.route('/delete/<int:id>', methods=['DELETE'], endpoint=None)
 def delete_shooter(id):
-    print("==========Deleting Shooter===========")
-    if request.method == 'POST':
-        shooter_to_delete = Shooter.query.get_or_404(id)
+    print("|")
+    print("=========================== *Deleting Shooter* ====================")
+    print("|")
+    if request.method == 'DELETE':
+    # =======================================================================================
+        # TODO The model ID is different than the table.
+        # d_shooter = Shooter.query.get(id)
+        d_shooter = request.get_json
+        print("this is d_shooter:", d_shooter)
+        # shooters = Shooter.query.all()
+        shooter_to_delete = Shooter.query.get(id)
+        print('deleted shooter: ', shooter_to_delete)
+        # shooters = ShooterSchema()
+        
         try:
-            db.session.delete(shooter_to_delete)
-            db.session.commit()
-            print("shooter has been deleted id:", id)
-            return redirect('/KumaArms/shooters')
-        except:
-            print('delete shooter error')
-            return redirect('/KumaArms/shooters')
+            if d_shooter:
+                # if shooter_to_delete:
+                #TODO this is the problem
+                # shooter_schema = shooters.load(json.dump(d_shooter))
+                # for s in shooter_to_delete:
+                    # print(f'------ shooter: ', s.first_name, s.last_name, s._id)
+                # print("|")
+                # print("|")
+                # print("--------------------------", shooter_schema)
+                # shooter_schema = shooters.load(d_shooter)
+                # print("shooter_schema!!!!!!!!!!:", shooter_schema)
+                
+                # for shooter in shooter_schema:
+
+                if shooter_to_delete['_id'] == id:
+                    print("we are in IF-------------------------------")
+                    # shooters.remove()
+                    print(shooter_to_delete, " has been removed")
+                    break
+                    db.session.delete(shooter_to_delete)
+                    db.session.commit()
+                    print(f"shooter {shooter_to_delete} has been successfully deleted from DB")
+            else:
+                raise Exception("There is something wrong with the request")
+
+                
+        except ValidationError as e: # if there is a Validationerror show me what that error is
+            print("!!!❌❌  WE HAVE A VALIDATION ERROR  ❌❌!!!",)
+            print(e)
+            print(e.messages)
+            print(e.valid_data)
+        print("+++ we are here now at dumps +++")
+        print("|")
+        # return ShooterSchema.dump() #, many=True
+        # return ShooterSchema().dump() #, many=True
+    # =======================================================================================
     else:
-        return redirect(url_for('v1_firearm_profile_bp.show_shooters'))
+        # return redirect(url_for('v1_firearm_profile_bp.show_shooters'))
+        raise Exception("request is not DELETE error") 
+    print("*************************************************************************")
 
 
 #----------------------------------------------------------------------------------------
 # EDIT SHOOTER
 @v1_firearm_profile_bp.route('/edit/<int:id>', methods=['PUT'])
 def edit_shooter(id):
+    print('==============================================================')
+    print('WE ARE IN THE EDIT_SHOOTER PAGE')
     if request.method == "PUT":
-        # put_shooter_data = request.get_json()
+        put_shooter = request.get_json()
+        shooter_edit = ShooterSchema()
+
+        try:
+            print("we are in try")
+            print(shooter_edit.load(shooter_edit))
+            shooter_schema = shooter_edit.load(shooter_edit)
+
+            db.session.put(shooter_schema)
+            db.session.commit()
+            print("we are in try 2")
+
+        except ValidationError as e:
+            print("WE HAVE VALIDATION ERROR")
+            print(e)
+
+        print(":")
         print('==============================================================')
-        print('WE ARE IN THE EDIT_SHOOTER PAGE')
-        print('==============================================================')
+        return shooter_edit.dump(shooter_schema)
     else:
         print('error: type is not PUT:', request.content_type )
 

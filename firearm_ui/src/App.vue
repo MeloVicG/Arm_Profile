@@ -6,6 +6,9 @@
     <router-link to="/KumaArms/shooters">Shooters</router-link>
   </div>
   <router-view/>
+  <footer class="bg-dark text-white text-center" style="border-radius:10px;"> 
+    This is a Project to test ONEIL skills 
+  </footer>
 </template> 
 
 <script>
