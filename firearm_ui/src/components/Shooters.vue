@@ -17,22 +17,15 @@ body
                     th Action
             tbody
                 tr(v-for="(shooter) in this.shooters" :key='shooter._id') 
-                    //-:key='shooter.id'
                     td {{shooter._id}}
                     td {{shooter.first_name}}
                     td {{shooter.last_name}}
                     td {{shooter.firearm_preference}}
                     td {{shooter.description}}
                     button.btn.btn-danger(@click='deleteShooter(shooter._id)') Delete
-                    button.btn.btn-info   Edit
-                    //- td.router-link(:to="{ name:"ShooterProfile" , params: {id:shooter._id}}")
-                    //- THERE IS NO ID FOR BACKEND JUST FROM VUEJS
-
-                    //- td.a( href=url_for('KumaArms/shooter_profile', id=shooter._id,) ) {{ shooter.first_name }}
-                    //- <!-- <form action="/delete/<int:id>"></form> -->
-                        //- <!-- delete button -->
-                    //- form.action( url_for('delete_shooter', id=shooter._id) method='POST')
-                        td.button Delete
+                    button.btn.btn-info(@click="$router.push(`/KumaArms/shooter_profile/${shooter._id}`)") Edit
+                    //- button.btn.btn-info.router.push({ path:`/KumaArms/shooter_profile/${shooter._id}`}) Edit
+                    //- button.btn.btn-info.router.push({ path:`/KumaArms/shooter_profile/${shooter._id}`}) Edit
 
 </template>
 
@@ -72,13 +65,13 @@ export default {
         },
         
         deleteShooter(id){ // parameter is automatic?
-            console.log('SHOOTER: ', id)
             axios.delete(`http://127.0.0.1:5000/KumaArms/delete/${id}`) 
             .then(() => {
                 console.log(`Shooter has been ${id} deleted`)
+                // this.$router.push('/KumaArms/shooters')
+                this.$router.go()
             })
             .catch(err =>{
-                console.log(`Shooter has been ${id} deleted`)
                 console.log('deleteShooter error: ',err);
             });
         },

@@ -81,15 +81,10 @@ export default {
       createShooter(payload){ // parameter is automatic?
         axios.post('http://127.0.0.1:5000/KumaArms/create_shooter', payload) //THIS SENDS AS A application/json
         .then(() => {
-          // console.log("this is the payload: ", payload);
-          this.getShooters()
-          // this.shooters = [...payload]
-          // console.log('Shooters AFTER------',this.shooters);
-
+          console.log(`you have entered *${payload.first_name}* to database`);
         })
         .catch(err =>{
           console.log('this is your createShooter error: ',err);
-          this.getShooters()
         })
       },
 

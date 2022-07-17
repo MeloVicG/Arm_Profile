@@ -4,11 +4,11 @@ from api.utils import create_app
 # we want to put Marshmellow with the Models?
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields, post_load
-from flask_marshmallow import Marshmallow
+# from flask_marshmallow import Marshmallow # , Schema, fields
 
 app = create_app()
 db = SQLAlchemy(app)
-ma = Marshmallow(app)
+# ma = Marshmallow(app)
 
 # TODO i wonder if this ma has to be moved to the utils...create_app()???
 
@@ -41,8 +41,8 @@ class Shooter(db.Model):
     description = db.Column(db.String(length=200), nullable=True)
     # FireArms = relationship("FireArm", backref="shooters")
 
-    def __init__(self, _id, first_name, last_name, firearm_preference, description):
-        self._id = _id
+    # input into data
+    def __init__(self, first_name, last_name, firearm_preference, description):
         self.first_name = first_name
         self.last_name = last_name
         self.firearm_preference = firearm_preference
@@ -84,7 +84,7 @@ class Parts(db.Model):
 class ShooterSchema(Schema):
     # class Meta:
         # model = Shooter
-    _id = fields.Integer()
+    _id = fields.Integer(allow_none=True, data_key=None) # dump_default=True
     first_name = fields.String()
     last_name = fields.String()
     firearm_preference = fields.String()
@@ -100,13 +100,18 @@ class ShooterSchema(Schema):
 # class ShooterSchema(ma.SQLAlchemySchema):
 #     class Meta:
 #         model = Shooter
-#         # fields= ('_id', 'first_name', 'last_name', 'firearm_preference', 'description')
 #     _id = ma.auto_field()
 #     first_name = ma.auto_field()
 #     last_name = ma.auto_field()
 #     firearm_preference = ma.auto_field()
-#     description = ma.auto_field()
+#     description = ma.auto_field()       
 
+#     # @post_load
+#     # def load_shooter(self, data, *args, **kwargs):
+#     #     """
+#     #     Retuns a shooter model with data provided
+#     #     """
+#     #     return Shooter(**data)
 
 class FireArmSchema(Schema):
     # class Meta:
@@ -117,3 +122,13 @@ class FireArmSchema(Schema):
     gun_parts = fields.String()
     gun_bullet_type = fields.String()
     gun_description = fields.String()
+
+# class FireArmSchema(ma.SQLAlchemySchema):
+#     # class Meta:
+#         # model = FireArm
+#     _id = ma.auto_field()
+#     gun_type = ma.auto_field()
+#     gun_name = ma.auto_field()
+#     gun_parts = ma.auto_field()
+#     gun_bullet_type = ma.auto_field()
+#     gun_description = ma.auto_field()

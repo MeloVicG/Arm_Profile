@@ -11,7 +11,7 @@ from marshmallow import ValidationError
 from models.Shooter_Models import Shooter, FireArm, Parts, db, ShooterSchema, FireArmSchema
 from api.utils import create_app
 app = create_app() 
-
+import json
 
 # http://exploreflask.com/en/latest/blueprints.html
 v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix="/KumaArms", static_folder="static")
@@ -22,8 +22,6 @@ v1_firearm_profile_bp = Blueprint("v1_firearm_profile_bp", __name__, url_prefix=
 @v1_firearm_profile_bp.route('/shooters', methods=['GET'], endpoint=None)
 def get_shooters():
     shooters_query = db.session.query(Shooter).all()
-    print("|")
-    print("", shooters_query)
     print("******************  we are in the GET show all shooters page  **********************")
     # shooters = Shooter.query.all()
     # before marshmellow to receive json
@@ -34,7 +32,7 @@ def get_shooters():
 
 #----------------------------------------------------------------------------------------
 #               ✔✔✔✔✔✔✔✔ COMPLETE ✔✔✔✔✔✔✔✔
-@v1_firearm_profile_bp.route('/create_shooter', methods=['POST'])
+@v1_firearm_profile_bp.route('/create_shooter', methods=['POST'], endpoint=None )
 def create_shooter():
     # shooters_query = db.session.query(Shooter).all()
 
@@ -89,67 +87,42 @@ def gun_profile(id):
 
 
 #----------------------------------------------------------------------------------------
-# TODO WORK ON DELETE AND PUT SHOOTERS
-
 # DELETE SHOOTER
-@v1_firearm_profile_bp.route('/delete/<int:id>', methods=['DELETE'], endpoint=None)
+@v1_firearm_profile_bp.route('/delete/<int:id>', methods=['DELETE'])
 def delete_shooter(id):
     print("|")
     print("=========================== *Deleting Shooter* ====================")
     print("|")
-    if request.method == 'DELETE':
     # =======================================================================================
-        # TODO The model ID is different than the table.
-        # d_shooter = Shooter.query.get(id)
+    if request.method == 'DELETE':
         d_shooter = request.get_json
-        print("this is d_shooter:", d_shooter)
-        # shooters = Shooter.query.all()
+        shooter_schema = ShooterSchema(many=True) 
+        # shooter_to_delete = Shooter.query.all()
         shooter_to_delete = Shooter.query.get(id)
-        print('deleted shooter: ', shooter_to_delete)
-        # shooters = ShooterSchema()
-        
-        try:
-            if d_shooter:
-                # if shooter_to_delete:
-                #TODO this is the problem
-                # shooter_schema = shooters.load(json.dump(d_shooter))
-                # for s in shooter_to_delete:
-                    # print(f'------ shooter: ', s.first_name, s.last_name, s._id)
-                # print("|")
-                # print("|")
-                # print("--------------------------", shooter_schema)
-                # shooter_schema = shooters.load(d_shooter)
-                # print("shooter_schema!!!!!!!!!!:", shooter_schema)
-                
-                # for shooter in shooter_schema:
+        # output = shooter_schema.dump(shooter_to_delete)        
 
-                if shooter_to_delete['_id'] == id:
-                    print("we are in IF-------------------------------")
-                    # shooters.remove()
-                    print(shooter_to_delete, " has been removed")
-                    break
-                    db.session.delete(shooter_to_delete)
-                    db.session.commit()
-                    print(f"shooter {shooter_to_delete} has been successfully deleted from DB")
+        try:
+            if shooter_to_delete:
+                print(shooter_to_delete, " has been removed")
+                db.session.delete(shooter_to_delete)
+                db.session.commit()
+                print(f"shooter {shooter_to_delete.first_name} has been successfully deleted from DB")
+
             else:
                 raise Exception("There is something wrong with the request")
 
-                
         except ValidationError as e: # if there is a Validationerror show me what that error is
             print("!!!❌❌  WE HAVE A VALIDATION ERROR  ❌❌!!!",)
             print(e)
             print(e.messages)
             print(e.valid_data)
-        print("+++ we are here now at dumps +++")
         print("|")
-        # return ShooterSchema.dump() #, many=True
-        # return ShooterSchema().dump() #, many=True
     # =======================================================================================
-    else:
-        # return redirect(url_for('v1_firearm_profile_bp.show_shooters'))
-        raise Exception("request is not DELETE error") 
-    print("*************************************************************************")
+        print("*************************************************************************")
+        return "we have successfully deleted shooter from the db"
 
+    else:
+        raise Exception("request is not DELETE error") 
 
 #----------------------------------------------------------------------------------------
 # EDIT SHOOTER
@@ -192,12 +165,17 @@ def logout():
     print("**************returning to register page*****************")
     return redirect(url_for('v1_firearm_profile_bp.register'))
 
-# reads function but not sure how it does
-# with v1_firearm_profile_bp.request_context(environ):
-#     assert request.method == "POST"
 
 
-# if __name__== "__main__":
-#     #creates the db if it does not exist
-#     db.create_all()
-#     app.run(debug = True)
+
+
+
+# DONE 
+# - able to successfully delete and refresh page.
+
+# TODO
+# - need to learn AJAX so I can refresh page without refreshing
+# - create shooter is not working again because no positional arguement _id...
+# -
+# - Work on EDIT next
+# -

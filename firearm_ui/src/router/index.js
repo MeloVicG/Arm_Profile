@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import GunsList from '../views/GunsList'
 import GunProfile from '@/components/GunProfile'
 import Shooters from '@/components/Shooters'
+import ShooterProfile from '@/components/ShooterProfile'
 import Register from '@/components/Register'
 
 const routes = [
@@ -16,20 +17,10 @@ const routes = [
     name: 'Register',
     component: Register
   },
-  // {
-    // path: '/KumaArms/create_shooter',
-    // redirect: '/KumaArms/shooters',
-  // },
   {
     path: '/KumaArms/guns_list',
     name: 'GunsList',
     component: GunsList
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
-    // <<< WHAT IS THIS >>>
-    // component: () => import(/* webpackChunkName: "about" */ '../views/Guns_List.vue')
   },
   {
     path: '/KumaArms/gun_profile',
@@ -40,6 +31,11 @@ const routes = [
     path: '/KumaArms/shooters',
     name: 'Shooters',
     component: Shooters
+  },
+  {
+    path: '/KumaArms/shooter_profile/:id',
+    name: 'ShooterProfile',
+    component: ShooterProfile
   },
 ]
 
