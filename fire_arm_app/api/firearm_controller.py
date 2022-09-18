@@ -29,7 +29,6 @@ def get_shooters():
     output = shooter_schema.dump(shooters_query)
     return jsonify(output)
 
-
 #----------------------------------------------------------------------------------------
 #               ✔✔✔✔✔✔✔✔ COMPLETE ✔✔✔✔✔✔✔✔
 @v1_firearm_profile_bp.route('/create_shooter', methods=['POST'], endpoint=None )
@@ -84,7 +83,6 @@ def gun_profile(id):
                                     )
     selected_firearm = FireArm.query.get(id)
     return render_template('Gun_Profile.html', selected_firearm=selected_firearm, pistol=pistol)
-
 
 #----------------------------------------------------------------------------------------
 # DELETE SHOOTER

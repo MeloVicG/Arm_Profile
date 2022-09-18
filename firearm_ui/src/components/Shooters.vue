@@ -5,6 +5,7 @@ body
     |
     .container
         //- table.table-dark.table-hover
+        //- this.shooter is not needed in the html
         h1.ShootersTitle Shooters Table  
         table.table.table-dark.table-striped
             thead
@@ -16,21 +17,24 @@ body
                     th Description
                     th Action
             tbody
-                tr(v-for="(shooter) in this.shooters" :key='shooter._id') 
+                tr(v-for="(shooter) in shooters" :key='shooter._id') 
                     td {{shooter._id}}
                     td {{shooter.first_name}}
                     td {{shooter.last_name}}
                     td {{shooter.firearm_preference}}
                     td {{shooter.description}}
                     button.btn.btn-danger(@click='deleteShooter(shooter._id)') Delete
-                    button.btn.btn-info(@click="$router.push(`/KumaArms/shooter_profile/${shooter._id}`)") Edit
-                    //- button.btn.btn-info.router.push({ path:`/KumaArms/shooter_profile/${shooter._id}`}) Edit
-                    //- button.btn.btn-info.router.push({ path:`/KumaArms/shooter_profile/${shooter._id}`}) Edit
-
+                    //- CORRECT (not really)
+                    //- button.btn.btn-info(@click="$router.push(`/KumaArms/shooter_profile/${shooter._id}`)") Edit
+                    //- this is better
+                    //- button.btn.btn-info(@click="$router.push({ name:'ShooterProfile', params:{id:shooter._id} })") Edit
+                    //- TODO this is suppose to be correct
+                    //- button.btn.btn-info.router-link(:to="{ name:'ShooterProfile', params:{_id:shooter._id} }") Edit
+                    router-link.button.btn.btn-info(:to="{ name:'ShooterProfile', params:{_id:shooter._id} }") Edit
 </template>
 
-<script>
 
+<script>
 import axios from "axios"
 export default {
     name: 'Shooters',
@@ -45,7 +49,6 @@ export default {
             axios.get('http://127.0.0.1:5000/KumaArms/shooters')
             .then(res => {
                 this.shooters = res.data
-                console.log(res.data[0]);
                 console.log("this is the response: ", res);
             })
             .catch(err =>{
@@ -53,16 +56,16 @@ export default {
             })
         },
 
-        editShooter(id){ // parameter is automatic?
-            axios.put(`http://127.0.0.1:5000/KumaArms/edit/${id}` ) 
-            .then(() => {
-                this.getShooters()
-            })
-            .catch(err =>{
-                console.log('this is your createShooter error: ',err);
-                this.getShooters()
-            })
-        },
+        // editShooter(id){ // parameter is automatic?
+        //     axios.put(`http://127.0.0.1:5000/KumaArms/edit/${id}` ) 
+        //     .then(() => {
+        //         this.getShooters()
+        //     })
+        //     .catch(err =>{
+        //         console.log('this is your createShooter error: ',err);
+        //         this.getShooters()
+        //     })
+        // },
         
         deleteShooter(id){ // parameter is automatic?
             axios.delete(`http://127.0.0.1:5000/KumaArms/delete/${id}`) 
@@ -86,6 +89,7 @@ export default {
 
 
 </script>
+
 
 <style scoped> 
 /* @import "../node_modules/bootstrap/dist/css/bootstrap"; */

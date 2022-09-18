@@ -4,6 +4,7 @@
     <!-- <Shooters/> -->
     <router-link to="/KumaArms/guns_list">List of Guns</router-link> |
     <router-link to="/KumaArms/shooters">Shooters</router-link>
+    <!-- <router-link to="/KumaArms/shooter_profile/:id">Shooter profile</router-link> -->
   </div>
   <router-view/>
   <footer class="bg-dark text-white text-center" style="border-radius:10px;"> 

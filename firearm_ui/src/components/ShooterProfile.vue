@@ -8,17 +8,20 @@ head
     title Document
 body
     #container
-        h1#ShooterProfileTitle Hello Shooter {{this.shooters[4].first_name}}
-        form.action("shooters")
-            button DashBoard
-            .top-wrapper
-            img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6ygxqVtrly1VlqB7mCiDuWky9eSpJLru3nQ&usqp=CAU" alt="sexy shooter girl")
-            h2 {{this.shooters.first_name}} 
+    div(v-if="shooter_id") this works properly {{$route.params._id}}
+        h1#ShooterProfileTitle Hello Shooter {{this.shooter_id._id}} / {{this.shooter_id}} / {{_id}}
+        form.action(@click.preventDefault="shooters")
+            //- button(@click="onSubmit()") DashBoard
+            button DASHBOARD
+            input(type="submit")
+        .top-wrapper
+        img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6ygxqVtrly1VlqB7mCiDuWky9eSpJLru3nQ&usqp=CAU" alt="sexy shooter girl")
+        h2 {{this.shooter_id.first_name}} 
         .mid-wrapper
             img(src="https://www.mcmillanfirearms.com/images/MCMILLAN%20PHOTOS/RIFLE%20PHOTOS/TAC-50C.JPG" alt="mcmillan tac-50C")
-            h2 {{this.shooters.firearm_preference}}
+            h2 {{this.shooter_id.firearm_preference}}
         .bot-wrapper
-            h2 {{this.shooters.description}}
+            h2 {{this.shooter_id.description}}
 
 </template>
 
@@ -26,29 +29,28 @@ body
 
 import axios from "axios"
 export default {
-    name: 'ShooterProfile',
+    props:['_id'],    
+    //data is not necessary if there is a props for data being passed down
     data(){
-        return{
-            shooters:[],
-        }
+         return{
+            shooter_id: this.$route.params._id // returns id from params
+         }
     },
 
-    methods:{
-        getShooters(){
-            axios.get('http://127.0.0.1:5000/KumaArms/shooters')
-                .then(res => {
-                    this.shooters = res.data
-                    console.log(res.data);
-                })
-                .catch(err =>{
-                    console.log(err);
-                })
-            }
-        },
 
-    created(){
-        this.getShooters()
+    mounted(){
+        axios.get('http://127.0.0.1:5000/KumaArms/shooter_profile/' + this._id)
+            .then(console.log('THIS IS ID!!',this._id))
+            .then(res => console.log('THIS IS RESPONSE',res))
+            .catch(err => console.log('you have an error: ', err.message))
+        
+    },
+
+    onSubmit(){
+    //   e.preventDefault();
+      this.$router.push('/KumaArms/shooters')
     }
+
 
 } //export default
 

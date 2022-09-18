@@ -5,6 +5,7 @@ import GunProfile from '@/components/GunProfile'
 import Shooters from '@/components/Shooters'
 import ShooterProfile from '@/components/ShooterProfile'
 import Register from '@/components/Register'
+import NotFound from '@/components/NotFound'
 
 const routes = [
   {
@@ -33,14 +34,23 @@ const routes = [
     component: Shooters
   },
   {
-    path: '/KumaArms/shooter_profile/:id',
+    path: '/KumaArms/shooter_profile/:_id',
     name: 'ShooterProfile',
-    component: ShooterProfile
+    component: ShooterProfile,
+    props: true
+    // params: {id: shooter.id}
   },
+// catch all 404
+  { //this is kind of a regex form
+    path: '/:catch_error_paths(.*)',
+    name: 'NotFound',
+    component: NotFound
+  }
+
 ]
 
-const router = createRouter({
-  history: createWebHistory(), // process.env.BASE_URL
+const router = createRouter({  // what does this do??
+  history: createWebHistory(process.env.BASE_URL  ), // process.env.BASE_URL
   routes
 })
 
